@@ -1,0 +1,1181 @@
+.planningPage {
+  margin-left: 260px;
+  min-height: 100vh;
+  padding: 22px 24px 26px;
+  background: #f6f8fc;
+  color: #07145f;
+  box-sizing: border-box;
+  transition: margin-left 0.25s ease;
+}
+
+:global(body.sidebar-collapsed) .planningPage {
+  margin-left: 76px;
+}
+
+/* =========================
+   CABEÇALHO
+========================= */
+
+.planningHeader {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 22px;
+  margin-bottom: 18px;
+}
+
+.planningTitle {
+  min-width: 0;
+}
+
+.eyebrow {
+  display: block;
+  margin-bottom: 6px;
+  color: #2563eb;
+  font-size: 13px;
+  line-height: 1.2;
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.planningTitle h1 {
+  margin: 0;
+  color: #07145f;
+  font-size: 30px;
+  line-height: 1.1;
+  font-weight: 900;
+}
+
+.planningTitle p {
+  margin: 7px 0 0;
+  color: #64748b;
+  font-size: 14px;
+  line-height: 1.5;
+  font-weight: 700;
+}
+
+.planningHeaderActions {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+/* =========================
+   ÚLTIMA ATUALIZAÇÃO
+========================= */
+
+.lastUpdate {
+  min-height: 46px;
+  padding: 7px 14px;
+  border: 1px solid #dbe5f2;
+  border-radius: 10px;
+  background: #fff;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  box-sizing: border-box;
+  box-shadow: 0 2px 7px rgba(15, 23, 42, 0.04);
+}
+
+.lastUpdate span {
+  margin-bottom: 3px;
+  color: #64748b;
+  font-size: 11px;
+  line-height: 1;
+  font-weight: 800;
+}
+
+.lastUpdate strong {
+  color: #07145f;
+  font-size: 13px;
+  line-height: 1.2;
+  font-weight: 900;
+  white-space: nowrap;
+}
+
+/* =========================
+   BOTÕES DO CABEÇALHO
+========================= */
+
+.filterHeaderBtn,
+.refreshBtn {
+  height: 46px;
+  padding: 0 15px;
+  border: 1px solid #dbe5f2;
+  border-radius: 10px;
+  background: #fff;
+  color: #07145f;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  box-sizing: border-box;
+  font-size: 13px;
+  line-height: 1;
+  font-weight: 900;
+  cursor: pointer;
+
+  transition:
+    border-color 0.2s ease,
+    background 0.2s ease,
+    color 0.2s ease,
+    box-shadow 0.2s ease,
+    transform 0.15s ease;
+}
+
+.filterHeaderBtn svg,
+.refreshBtn svg {
+  width: 20px;
+  height: 20px;
+  min-width: 20px;
+  flex-shrink: 0;
+}
+
+.filterHeaderBtn:hover,
+.refreshBtn:hover {
+  border-color: #2563eb;
+  background: #eff6ff;
+  color: #2563eb;
+  box-shadow: 0 5px 12px rgba(37, 99, 235, 0.1);
+}
+
+.filterHeaderBtn:active,
+.refreshBtn:active {
+  transform: scale(0.97);
+}
+
+/* =========================
+   MÉTRICAS
+========================= */
+
+.planningMetrics {
+  display: grid;
+  grid-template-columns: repeat(7, minmax(0, 1fr));
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+.metricCard {
+  min-width: 0;
+  min-height: 122px;
+  padding: 16px;
+  border: 1px solid #e0e8f3;
+  border-radius: 12px;
+  background: #fff;
+  box-shadow: 0 2px 8px rgba(15, 23, 42, 0.04);
+
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+
+  gap: 10px;
+
+  box-sizing: border-box;
+  overflow: hidden;
+
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease,
+    border-color 0.2s ease;
+}
+
+.metricCard:hover {
+  transform: translateY(-2px);
+  border-color: #cbdaf0;
+  box-shadow: 0 8px 18px rgba(15, 23, 42, 0.08);
+}
+
+.metricContent {
+  flex: 1;
+  min-width: 0;
+}
+
+.metricLabel {
+  display: block;
+  margin-bottom: 10px;
+  color: #64748b;
+  font-size: 12px;
+  line-height: 1.2;
+  font-weight: 900;
+  text-transform: uppercase;
+}
+
+.metricValue {
+  display: block;
+  margin-bottom: 10px;
+  color: #07145f;
+  font-size: 27px;
+  line-height: 1;
+  font-weight: 900;
+  white-space: nowrap;
+}
+
+.metricDescription {
+  display: block;
+  color: #64748b;
+  font-size: 11px;
+  line-height: 1.3;
+  font-weight: 700;
+}
+
+.metricIcon {
+  width: 36px;
+  height: 36px;
+  min-width: 36px;
+  flex: 0 0 36px;
+
+  border-radius: 10px;
+
+  background: #eef4ff;
+  color: #2563eb;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  box-sizing: border-box;
+  overflow: hidden;
+}
+
+.metricIcon svg {
+  width: 21px;
+  height: 21px;
+}
+
+.metricCard.success .metricValue {
+  color: #16a34a;
+}
+
+.metricCard.success .metricIcon {
+  background: #dcfce7;
+  color: #16a34a;
+}
+
+.metricCard.warning .metricValue {
+  color: #f59e0b;
+}
+
+.metricCard.warning .metricIcon {
+  background: #fef3c7;
+  color: #f59e0b;
+}
+
+.metricCard.danger {
+  border-color: #fecaca;
+  background:
+    linear-gradient(
+      180deg,
+      #fff 0%,
+      #fff8f8 100%
+    );
+}
+
+.metricCard.danger .metricValue {
+  color: #ef4444;
+}
+
+.metricCard.danger .metricIcon {
+  background: #fee2e2;
+  color: #ef4444;
+}
+
+.metricCard.blue .metricValue {
+  color: #07145f;
+}
+
+.metricCard.blue .metricIcon {
+  background: #eef4ff;
+  color: #2563eb;
+}
+
+/* =========================
+   FILTROS
+========================= */
+
+.planningFilters {
+  margin-bottom: 16px;
+  padding: 14px;
+
+  border: 1px solid #dbe5f2;
+  border-radius: 12px;
+
+  background: #fff;
+
+  display: grid;
+  grid-template-columns:
+    minmax(260px, 1.5fr)
+    minmax(220px, 0.75fr)
+    auto;
+
+  align-items: center;
+  gap: 12px;
+
+  box-shadow:
+    0 2px 8px
+    rgba(15, 23, 42, 0.04);
+}
+
+.filterField {
+  height: 44px;
+
+  border: 1px solid #dbe5f2;
+  border-radius: 10px;
+
+  background: #f8fbff;
+
+  display: flex;
+  align-items: center;
+
+  gap: 10px;
+
+  transition: 0.2s;
+}
+
+.filterField:focus-within {
+  border-color: #2563eb;
+  background: #fff;
+
+  box-shadow:
+    0 0 0 3px
+    rgba(37, 99, 235, 0.08);
+}
+
+.searchField {
+  padding: 0 14px;
+}
+
+.filterField > svg {
+  width: 20px;
+  height: 20px;
+  min-width: 20px;
+
+  flex-shrink: 0;
+
+  color: #2563eb;
+}
+
+.searchField input {
+  width: 100%;
+
+  border: none;
+  outline: none;
+
+  background: transparent;
+  color: #07145f;
+
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.searchField input::placeholder {
+  color: #94a3b8;
+}
+
+.selectField {
+  position: relative;
+
+  padding:
+    0
+    40px
+    0
+    14px;
+}
+
+.selectField select {
+  width: 100%;
+  height: 100%;
+
+  border: none;
+  outline: none;
+
+  appearance: none;
+
+  background: transparent;
+
+  color: #07145f;
+
+  font-size: 13px;
+  font-weight: 800;
+
+  cursor: pointer;
+}
+
+.selectArrow {
+  position: absolute;
+
+  right: 12px;
+
+  color: #64748b !important;
+
+  pointer-events: none;
+}
+
+.filterResult {
+  min-height: 44px;
+
+  padding: 0 14px;
+
+  border-radius: 10px;
+
+  background: #eef4ff;
+  color: #2563eb;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  gap: 8px;
+
+  font-size: 12px;
+  font-weight: 900;
+}
+
+.filterResult svg {
+  width: 20px;
+  height: 20px;
+
+  flex-shrink: 0;
+}
+
+/* =========================
+   CARD DA TABELA
+========================= */
+
+.planningTableCard {
+  border: 1px solid #dbe5f2;
+  border-radius: 12px;
+
+  background: #fff;
+
+  overflow: hidden;
+
+  box-shadow:
+    0 3px 12px
+    rgba(15, 23, 42, 0.05);
+}
+
+.planningTableHeader {
+  min-height: 72px;
+
+  padding: 14px 18px;
+
+  border-bottom:
+    1px solid #e5edf7;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  gap: 18px;
+}
+
+.planningTableHeader > div:first-child > span {
+  display: block;
+
+  margin-bottom: 4px;
+
+  color: #2563eb;
+
+  font-size: 12px;
+  font-weight: 900;
+
+  text-transform: uppercase;
+}
+
+.planningTableHeader h2 {
+  margin: 0;
+
+  color: #07145f;
+
+  font-size: 18px;
+  font-weight: 900;
+}
+
+.tableLegend {
+  display: flex;
+  align-items: center;
+
+  gap: 16px;
+
+  flex-wrap: wrap;
+}
+
+.legendItem {
+  display: flex;
+  align-items: center;
+
+  gap: 6px;
+
+  color: #475569;
+
+  font-size: 11px;
+  font-weight: 800;
+}
+
+.legendItem i {
+  width: 9px;
+  height: 9px;
+
+  border-radius: 50%;
+}
+
+.legendItem.noPrazo i {
+  background: #22c55e;
+}
+
+.legendItem.atencao i {
+  background: #f59e0b;
+}
+
+.legendItem.atrasada i {
+  background: #ef4444;
+}
+
+.legendItem.naoIniciada i {
+  background: #94a3b8;
+}
+
+/* =========================
+   SCROLL
+========================= */
+
+.planningTableWrap {
+  width: 100%;
+
+  max-height:
+    calc(100vh - 390px);
+
+  min-height: 320px;
+
+  overflow: auto;
+
+  background: #fff;
+}
+
+/* =========================
+   TABELA
+========================= */
+
+.planningTable {
+  width: max-content;
+  min-width: 100%;
+
+  border-collapse: separate;
+  border-spacing: 0;
+
+  table-layout: fixed;
+}
+
+.planningTable thead {
+  position: sticky;
+  top: 0;
+
+  z-index: 30;
+}
+
+.mainHeaderRow th {
+  height: 44px;
+
+  padding: 10px;
+
+  background: #f8fbff;
+
+  border-right:
+    1px solid #e5edf7;
+
+  border-bottom:
+    1px solid #dbe5f2;
+
+  color: #07145f;
+
+  font-size: 11px;
+  font-weight: 900;
+
+  text-align: center;
+  text-transform: uppercase;
+}
+
+.mainHeaderRow .boatColumn {
+  text-align: left;
+}
+
+.mainHeaderRow .boatColumn small {
+  display: block;
+
+  margin-top: 4px;
+
+  color: #64748b;
+
+  font-size: 10px;
+}
+
+.phaseHeaderRow th {
+  height: 40px;
+
+  padding: 8px;
+
+  background: #f3f7fc;
+
+  border-right:
+    1px solid #dbe5f2;
+
+  border-bottom:
+    1px solid #dbe5f2;
+
+  color: #07145f;
+
+  font-size: 11px;
+  font-weight: 900;
+
+  text-align: center;
+}
+
+.phaseGroup {
+  min-width: 780px;
+}
+
+.datesHeaderRow th {
+  width: 130px;
+  min-width: 130px;
+
+  height: 48px;
+
+  padding: 8px;
+
+  background: #f8fbff;
+
+  border-right:
+    1px solid #e5edf7;
+
+  border-bottom:
+    1px solid #dbe5f2;
+}
+
+.datesHeaderRow th span {
+  display: block;
+
+  margin-bottom: 4px;
+
+  font-size: 10px;
+  font-weight: 900;
+}
+
+.datesHeaderRow th small {
+  display: block;
+
+  color: #64748b;
+
+  font-size: 9px;
+  font-weight: 800;
+}
+
+.planningTable td {
+  height: 60px;
+
+  padding: 9px 10px;
+
+  border-right:
+    1px solid #edf2f7;
+
+  border-bottom:
+    1px solid #e5edf7;
+
+  background: #fff;
+  color: #07145f;
+
+  font-size: 11px;
+  font-weight: 800;
+
+  text-align: center;
+
+  white-space: nowrap;
+}
+
+.planningTable tbody tr {
+  cursor: pointer;
+}
+
+.planningTable tbody tr:hover td,
+.planningTable tbody tr:hover .stickyColumn {
+  background: #f8fbff;
+}
+
+/* =========================
+   COLUNAS FIXAS
+========================= */
+
+.stickyColumn {
+  position: sticky;
+
+  z-index: 15;
+
+  background: #fff;
+}
+
+.planningTable thead .stickyColumn {
+  z-index: 40;
+
+  background: #f8fbff;
+}
+
+.boatColumn {
+  left: 0;
+
+  width: 190px;
+  min-width: 190px;
+  max-width: 190px;
+}
+
+.statusColumn {
+  left: 190px;
+
+  width: 145px;
+  min-width: 145px;
+  max-width: 145px;
+}
+
+.deliveryColumn {
+  left: 335px;
+
+  width: 140px;
+  min-width: 140px;
+  max-width: 140px;
+
+  box-shadow:
+    8px 0 12px -12px
+    rgba(15, 23, 42, 0.55);
+}
+
+.boatCell {
+  text-align: left !important;
+}
+
+.boatLink {
+  width: 100%;
+
+  border: none;
+
+  background: transparent;
+
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+
+  text-align: left;
+
+  cursor: pointer;
+}
+
+.boatLink strong {
+  margin-bottom: 4px;
+
+  color: #07145f;
+
+  font-size: 12px;
+  font-weight: 900;
+}
+
+.boatLink span {
+  max-width: 170px;
+
+  overflow: hidden;
+
+  text-overflow: ellipsis;
+  white-space: nowrap;
+
+  color: #64748b;
+
+  font-size: 11px;
+  font-weight: 700;
+}
+
+.boatLink:hover strong {
+  color: #2563eb;
+}
+
+.deliveryDate {
+  color: #07145f;
+
+  font-size: 11px;
+  font-weight: 900;
+}
+
+/* =========================
+   STATUS
+========================= */
+
+.boatStatus {
+  min-width: 115px;
+  min-height: 28px;
+
+  padding: 5px 10px;
+
+  border-radius: 999px;
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  gap: 6px;
+
+  font-size: 10px;
+  font-weight: 900;
+
+  white-space: nowrap;
+}
+
+.boatStatus svg {
+  width: 16px;
+  height: 16px;
+  min-width: 16px;
+
+  flex-shrink: 0;
+}
+
+.boatStatus.noPrazo {
+  border: 1px solid #86efac;
+  background: #dcfce7;
+  color: #15803d;
+}
+
+.boatStatus.atencao {
+  border: 1px solid #fde68a;
+  background: #fef3c7;
+  color: #d97706;
+}
+
+.boatStatus.atrasada {
+  border: 1px solid #fecaca;
+  background: #fee2e2;
+  color: #dc2626;
+}
+
+.boatStatus.naoIniciada {
+  border: 1px solid #cbd5e1;
+  background: #f1f5f9;
+  color: #64748b;
+}
+
+/* =========================
+   DATAS
+========================= */
+
+.phaseDateCell {
+  width: 130px;
+  min-width: 130px;
+  max-width: 130px;
+}
+
+.phaseEndCell {
+  border-right:
+    2px solid #dbe5f2 !important;
+}
+
+.dateValue,
+.dateStatusValue {
+  min-height: 24px;
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  gap: 4px;
+
+  font-size: 11px;
+  font-weight: 800;
+
+  white-space: nowrap;
+}
+
+.dateStatusValue svg {
+  width: 15px;
+  height: 15px;
+  min-width: 15px;
+
+  flex-shrink: 0;
+}
+
+.dateStatusValue.noPrazo {
+  color: #16a34a;
+}
+
+.dateStatusValue.atencao {
+  color: #f59e0b;
+}
+
+.dateStatusValue.atrasada {
+  color: #ef4444;
+}
+
+.dateStatusValue.naoIniciada {
+  color: #94a3b8;
+}
+
+.emptyDate {
+  color: #94a3b8 !important;
+}
+
+.replannedDate {
+  color: #2563eb;
+  font-weight: 900;
+}
+
+/* =========================
+   ESTADO VAZIO
+========================= */
+
+.planningEmpty {
+  min-height: 360px;
+
+  padding: 36px 20px;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.emptyIcon {
+  width: 60px;
+  height: 60px;
+
+  margin-bottom: 16px;
+
+  border-radius: 16px;
+
+  background: #eef4ff;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.emptyIcon svg {
+  width: 30px;
+  height: 30px;
+
+  color: #2563eb;
+}
+
+.planningEmpty h3 {
+  margin: 0 0 8px;
+
+  color: #07145f;
+
+  font-size: 20px;
+  font-weight: 900;
+}
+
+.planningEmpty p {
+  max-width: 420px;
+
+  margin: 0 0 18px;
+
+  color: #64748b;
+
+  font-size: 13px;
+  line-height: 1.5;
+  font-weight: 700;
+
+  text-align: center;
+}
+
+.planningEmpty button {
+  height: 42px;
+
+  padding: 0 16px;
+
+  border:
+    1px solid #2563eb;
+
+  border-radius: 8px;
+
+  background: #2563eb;
+  color: #fff;
+
+  display: inline-flex;
+  align-items: center;
+
+  gap: 8px;
+
+  font-size: 12px;
+  font-weight: 900;
+
+  cursor: pointer;
+}
+
+.planningEmpty button svg {
+  width: 18px;
+  height: 18px;
+}
+
+/* =========================
+   RODAPÉ
+========================= */
+
+.planningFooterNote {
+  min-height: 46px;
+
+  margin-top: 16px;
+
+  padding: 12px 14px;
+
+  border:
+    1px solid #dbe5f2;
+
+  border-radius: 10px;
+
+  background: #fff;
+
+  display: flex;
+  align-items: center;
+
+  gap: 8px;
+
+  color: #64748b;
+
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.planningFooterNote svg {
+  width: 20px;
+  height: 20px;
+  min-width: 20px;
+
+  flex-shrink: 0;
+
+  color: #2563eb;
+}
+
+/* =========================
+   RESPONSIVIDADE
+========================= */
+
+@media (max-width: 1850px) {
+  .planningMetrics {
+    grid-template-columns:
+      repeat(4, 1fr);
+  }
+}
+
+@media (max-width: 1450px) {
+  .planningHeader {
+    flex-direction: column;
+  }
+
+  .planningHeaderActions {
+    width: 100%;
+
+    justify-content: flex-start;
+  }
+
+  .planningMetrics {
+    grid-template-columns:
+      repeat(3, 1fr);
+  }
+
+  .planningFilters {
+    grid-template-columns:
+      1fr
+      260px;
+  }
+
+  .filterResult {
+    grid-column: 1 / -1;
+
+    justify-content: flex-start;
+  }
+
+  .planningTableHeader {
+    flex-direction: column;
+
+    align-items: flex-start;
+  }
+
+  .tableLegend {
+    justify-content: flex-start;
+  }
+}
+
+@media (max-width: 1100px) {
+  .planningMetrics {
+    grid-template-columns:
+      repeat(2, 1fr);
+  }
+
+  .planningFilters {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 850px) {
+  .planningPage,
+  :global(body.sidebar-collapsed) .planningPage {
+    margin-left: 0;
+
+    padding:
+      74px
+      14px
+      22px;
+  }
+
+  .planningTitle h1 {
+    font-size: 24px;
+  }
+
+  .planningHeaderActions {
+    flex-direction: column;
+
+    align-items: stretch;
+  }
+
+  .lastUpdate,
+  .filterHeaderBtn,
+  .refreshBtn {
+    width: 100%;
+  }
+
+  .planningMetrics {
+    grid-template-columns: 1fr;
+  }
+
+  .planningTableWrap {
+    max-height: 580px;
+  }
+}
+
+@media (max-width: 520px) {
+  .planningPage {
+    padding-left: 10px;
+    padding-right: 10px;
+  }
+
+  .planningTitle h1 {
+    font-size: 22px;
+  }
+
+  .planningTitle p {
+    font-size: 13px;
+  }
+
+  .planningTableHeader h2 {
+    font-size: 16px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .planningPage,
+  .filterHeaderBtn,
+  .refreshBtn,
+  .metricCard,
+  .filterField,
+  .planningTable tbody tr,
+  .planningEmpty button {
+    animation: none;
+    transition: none;
+  }
+}
