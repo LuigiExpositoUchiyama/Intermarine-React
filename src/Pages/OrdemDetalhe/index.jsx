@@ -82,6 +82,32 @@ function getTimelineIcon(icon) {
   return timelineIconMap[icon] ?? MdInfo;
 }
 
+function formatTimelineEvents(events = []) {
+  const chronologicalEvents = [...events].sort((a, b) => {
+    const first = `${a.date} ${a.time}`;
+    const second = `${b.date} ${b.time}`;
+
+    return first.localeCompare(second);
+  });
+
+  let operatorEntryCount = 0;
+
+  const formattedEvents = chronologicalEvents.map((item) => {
+    if (item.title?.toLowerCase().includes('entrada de operador')) {
+      operatorEntryCount++;
+
+      return {
+        ...item,
+        title: `Entrada do Operador ${operatorEntryCount}`,
+      };
+    }
+
+    return item;
+  });
+
+  return formattedEvents.reverse();
+}
+
 function getTimelineVariantClass(variant) {
   const map = {
     success: styles.success,
@@ -132,6 +158,17 @@ export default function OrdemDetalhe() {
   const [order, setOrder] = useState(null);
 
   const [timelineModalOpen, setTimelineModalOpen] = useState(false);
+
+  const [reworkError, setReworkError] = useState('');
+
+  const [reworkFilterOpen, setReworkFilterOpen] = useState(false);
+
+  const [reworkFilters, setReworkFilters] = useState({
+    code: '',
+    date: '',
+    status: '',
+    reason: '',
+  });
 
   const timelinePreviewLimit = 5;
 
@@ -188,6 +225,30 @@ export default function OrdemDetalhe() {
     };
   }, [timelineModalOpen]);
 
+  const filteredReworks = useMemo(() => {
+    if (!order) {
+      return [];
+    }
+
+    return order.relatedReworks.filter((item) => {
+      const matchCode =
+        !reworkFilters.code ||
+        item.code.toLowerCase().includes(reworkFilters.code.toLowerCase());
+
+      const matchDate =
+        !reworkFilters.date || item.operationDate === reworkFilters.date;
+
+      const matchStatus =
+        !reworkFilters.status || item.status === reworkFilters.status;
+
+      const matchReason =
+        !reworkFilters.reason ||
+        item.reason.toLowerCase().includes(reworkFilters.reason.toLowerCase());
+
+      return matchCode && matchDate && matchStatus && matchReason;
+    });
+  }, [order, reworkFilters]);
+
   const currentDayTimeline = useMemo(() => {
     if (!order) {
       return [];
@@ -195,13 +256,15 @@ export default function OrdemDetalhe() {
 
     const today = formatDateToKey(new Date());
 
-    const todayEvents = order.timeline.filter((item) => item.date === today);
+    const todayEvents = formatTimelineEvents(
+      order.timeline.filter((item) => item.date === today),
+    );
 
     if (todayEvents.length > 0) {
       return todayEvents;
     }
 
-    return order.timeline.slice(-timelinePreviewLimit);
+    return formatTimelineEvents(order.timeline).slice(-timelinePreviewLimit);
   }, [order]);
 
   function openTimelineModal() {
@@ -228,6 +291,20 @@ export default function OrdemDetalhe() {
     }
 
     navigate('/');
+  }
+
+  function handleGenerateRework() {
+    setReworkError('');
+
+    if (order.productionStatus !== 'concluida') {
+      setReworkError(
+        'A Ordem de Retrabalho só pode ser gerada após a finalização da Ordem de Fabricação (OF).',
+      );
+
+      return;
+    }
+
+    console.log('Abrir criação de Ordem de Retrabalho');
   }
 
   function getOrderTypeLabel() {
@@ -726,7 +803,7 @@ export default function OrdemDetalhe() {
         <div className={styles.reworkHeader}>
           <h2>Retrabalho e rastreabilidade</h2>
 
-          <button type="button">
+          <button type="button" onClick={() => setReworkFilterOpen(true)}>
             <MdFilterAlt />
             Filtros
           </button>
@@ -734,19 +811,14 @@ export default function OrdemDetalhe() {
 
         <div className={styles.reworkContent}>
           <aside className={styles.inspectionRule}>
-            <strong>Regra de inspeção</strong>
-
-            <p>
-              O retrabalho só pode ser gerado após a finalização desta ordem.
-            </p>
-
-            <button
-              type="button"
-              disabled={order.productionStatus !== 'concluida'}
-            >
+            <button type="button" onClick={handleGenerateRework}>
               <MdAdd />
               Gerar Ordem de Retrabalho
             </button>
+
+            {reworkError && (
+              <div className={styles.reworkError}>{reworkError}</div>
+            )}
           </aside>
 
           <div className={styles.relatedReworks}>
@@ -770,7 +842,7 @@ export default function OrdemDetalhe() {
                   </thead>
 
                   <tbody>
-                    {order.relatedReworks.map((rework) => (
+                    {filteredReworks.map((rework) => (
                       <tr key={rework.id}>
                         <td>{rework.code}</td>
 
@@ -858,7 +930,7 @@ export default function OrdemDetalhe() {
 
             <div className={styles.timelineModalBody}>
               <div className={[styles.timeline, styles.timelineFull].join(' ')}>
-                {order.timeline.map((item) => {
+                {formatTimelineEvents(order.timeline).map((item) => {
                   const TimelineIcon = getTimelineIcon(item.icon);
 
                   return (
@@ -898,6 +970,106 @@ export default function OrdemDetalhe() {
 
               <button type="button" onClick={closeTimelineModal}>
                 Fechar
+              </button>
+            </footer>
+          </section>
+        </div>
+      )}
+
+      {reworkFilterOpen && (
+        <div
+          className={styles.timelineModalBackdrop}
+          onClick={() => setReworkFilterOpen(false)}
+        >
+          <section
+            className={styles.timelineModal}
+            role="dialog"
+            aria-modal="true"
+            onClick={(event) => event.stopPropagation()}
+          >
+            <header className={styles.timelineModalHeader}>
+              <div>
+                <span className={styles.timelineModalEyebrow}>Filtros</span>
+
+                <h2>Filtrar ordens de retrabalho</h2>
+              </div>
+
+              <button
+                type="button"
+                className={styles.timelineModalClose}
+                onClick={() => setReworkFilterOpen(false)}
+              >
+                <MdClose />
+              </button>
+            </header>
+
+            <div className={styles.timelineModalBody}>
+              <input
+                placeholder="Número da OR"
+                value={reworkFilters.code}
+                onChange={(event) =>
+                  setReworkFilters({
+                    ...reworkFilters,
+                    code: event.target.value,
+                  })
+                }
+              />
+
+              <input
+                placeholder="Data da operação"
+                value={reworkFilters.date}
+                onChange={(event) =>
+                  setReworkFilters({
+                    ...reworkFilters,
+                    date: event.target.value,
+                  })
+                }
+              />
+
+              <select
+                value={reworkFilters.status}
+                onChange={(event) =>
+                  setReworkFilters({
+                    ...reworkFilters,
+                    status: event.target.value,
+                  })
+                }
+              >
+                <option value="">Todos os status</option>
+                <option value="concluida">Concluída</option>
+                <option value="em-andamento">Em andamento</option>
+                <option value="pendente">Pendente</option>
+              </select>
+
+              <input
+                placeholder="Motivo"
+                value={reworkFilters.reason}
+                onChange={(event) =>
+                  setReworkFilters({
+                    ...reworkFilters,
+                    reason: event.target.value,
+                  })
+                }
+              />
+            </div>
+
+            <footer className={styles.timelineModalFooter}>
+              <button
+                type="button"
+                onClick={() =>
+                  setReworkFilters({
+                    code: '',
+                    date: '',
+                    status: '',
+                    reason: '',
+                  })
+                }
+              >
+                Limpar
+              </button>
+
+              <button type="button" onClick={() => setReworkFilterOpen(false)}>
+                Aplicar
               </button>
             </footer>
           </section>

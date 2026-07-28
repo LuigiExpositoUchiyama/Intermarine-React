@@ -39,9 +39,11 @@ const boatPhaseTemplates = [
   { number: 1, name: 'Laminação', color: 'navy' },
   { number: 2, name: 'Pré-Montagem', color: 'orange' },
   { number: 3, name: 'Pintura', color: 'blue' },
-  { number: 4, name: 'Mini Fábrica', color: 'green' },
-  { number: 5, name: 'Piscina', color: 'cyan' },
-  { number: 6, name: 'Qualidade', color: 'blue' },
+  { number: 4, name: 'Montagem Final E1', color: 'green' },
+  { number: 5, name: 'Montagem Final E2', color: 'cyan' },
+  { number: 6, name: 'Montagem Final E3', color: 'blue' },
+  { number: 7, name: 'Piscina', color: 'cyan' },
+  { number: 8, name: 'Qualidade', color: 'blue' },
 ];
 
 const miniFactoryPhaseTemplates = [
@@ -131,7 +133,16 @@ function completeMissingPhases(phases, templates) {
       (phase) => phase.number === template.number,
     );
 
-    return existingPhase ?? createEmptyPhase(template);
+    if (!existingPhase) {
+      return createEmptyPhase(template);
+    }
+
+    return {
+      ...existingPhase,
+      number: template.number,
+      name: template.name,
+      color: template.color,
+    };
   });
 }
 
