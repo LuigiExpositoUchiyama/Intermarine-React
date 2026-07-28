@@ -1,0 +1,1534 @@
+.gestaoPage {
+  width: auto;
+  max-width: 100%;
+  min-height: 100vh;
+  margin-left: 260px;
+  padding: 20px;
+  box-sizing: border-box;
+  background: #f7f5f0;
+  color: #17243d;
+  overflow-x: hidden;
+  transition: margin-left 0.25s ease;
+}
+
+:global(body.sidebar-collapsed) .gestaoPage {
+  margin-left: 76px;
+}
+
+.homeHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 18px;
+  margin-bottom: 18px;
+}
+
+.eyebrow {
+  display: none;
+}
+
+.homeHeader h1 {
+  margin: 0;
+  font-size: 30px;
+  line-height: 1.1;
+  font-weight: 900;
+  color: #17243d;
+  text-transform: uppercase;
+}
+
+.tabs {
+  display: flex;
+  gap: 28px;
+  margin-top: 16px;
+}
+
+.tabs button {
+  position: relative;
+  border: none;
+  padding: 0 0 10px;
+  background: transparent;
+  color: #17243d;
+  font-size: 13px;
+  font-weight: 900;
+  text-transform: uppercase;
+  cursor: pointer;
+}
+
+.tabs button.active::after {
+  content: "";
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  height: 4px;
+  border-radius: 999px;
+  background: #b08b45;
+}
+
+.headerActions {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.phaseFilter {
+  height: 44px;
+  min-width: 230px;
+  padding: 0 42px 0 16px;
+  border: 1px solid #e5dccd;
+  border-radius: 8px;
+  background-color: #fffdf9;
+  color: #17243d;
+  font-size: 13px;
+  font-weight: 900;
+  text-transform: uppercase;
+  cursor: pointer;
+  outline: none;
+  appearance: none;
+  transition: 0.2s;
+  background-image:
+    linear-gradient(45deg, transparent 50%, #17243d 50%),
+    linear-gradient(135deg, #17243d 50%, transparent 50%);
+  background-position:
+    calc(100% - 18px) 18px,
+    calc(100% - 12px) 18px;
+  background-size: 6px 6px;
+  background-repeat: no-repeat;
+}
+
+.phaseFilter:hover {
+  border-color: #c4d2e3;
+}
+
+.phaseFilter:focus {
+  border-color: #b08b45;
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.12);
+}
+
+.phaseFilter option {
+  color: #17243d;
+  font-size: 14px;
+}
+
+.refreshBtn,
+.searchBox {
+  height: 44px;
+  border: 1px solid #e5dccd;
+  border-radius: 8px;
+  background: #fffdf9;
+}
+
+.refreshBtn {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 0 15px;
+  color: #17243d;
+  font-size: 13px;
+  font-weight: 900;
+  text-transform: uppercase;
+  cursor: pointer;
+}
+
+.refreshBtn svg,
+.searchBox > svg {
+  width: 20px;
+  height: 20px;
+  flex-shrink: 0;
+}
+
+.searchBox {
+  width: 320px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 0 12px;
+}
+
+.searchBox > svg {
+  color: #17243d;
+}
+
+.searchBox input {
+  width: 100%;
+  min-width: 0;
+  border: none;
+  outline: none;
+  background: transparent;
+  color: #17243d;
+  font-size: 14px;
+}
+
+.searchBox:focus-within {
+  border-color: #b08b45;
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.12);
+}
+
+.loading {
+  min-height: 100vh;
+  margin-left: 260px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #f7f5f0;
+  color: #17243d;
+  font-size: 14px;
+  font-weight: 900;
+}
+
+:global(body.sidebar-collapsed) .loading {
+  margin-left: 76px;
+}
+
+.metricsGrid {
+  display: grid;
+  grid-template-columns: repeat(8, minmax(130px, 1fr));
+  gap: 14px;
+  margin-bottom: 22px;
+}
+
+.metricCard {
+  min-width: 0;
+  min-height: 92px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 14px;
+  border: 1px solid #e6dfd3;
+  border-radius: 10px;
+  background: #fffdf9;
+  box-shadow: 0 2px 8px rgba(15, 23, 42, 0.04);
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.metricCard:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 18px rgba(15, 23, 42, 0.06);
+}
+
+.metricCard > div:last-child {
+  min-width: 0;
+}
+
+.metricIcon {
+  width: 42px;
+  height: 42px;
+  display: grid;
+  place-items: center;
+  flex-shrink: 0;
+  border-radius: 12px;
+  background: #f3ede3;
+}
+
+.metricIcon svg {
+  width: 23px;
+  height: 23px;
+  color: #17243d;
+}
+
+.metricCard strong {
+  display: block;
+  color: #17243d;
+  font-size: 26px;
+  line-height: 1;
+  font-weight: 900;
+}
+
+.metricCard span {
+  display: block;
+  margin-top: 6px;
+  color: #17243d;
+  font-size: 12px;
+  line-height: 1.15;
+  font-weight: 900;
+  text-transform: uppercase;
+  overflow-wrap: anywhere;
+}
+
+.metricCard small {
+  display: block;
+  margin-top: 4px;
+  color: #6b7280;
+  font-size: 11px;
+  line-height: 1.2;
+  font-weight: 700;
+  overflow-wrap: anywhere;
+}
+
+.metricCard.success .metricIcon {
+  background: #dcfce7;
+}
+
+.metricCard.success strong,
+.metricCard.success .metricIcon svg {
+  color: #16a34a;
+}
+
+.metricCard.danger .metricIcon {
+  background: #fee2e2;
+}
+
+.metricCard.danger strong,
+.metricCard.danger .metricIcon svg {
+  color: #ef4444;
+}
+
+.metricCard.warning .metricIcon {
+  background: #fef3c7;
+}
+
+.metricCard.warning strong,
+.metricCard.warning .metricIcon svg {
+  color: #f59e0b;
+}
+
+.metricCard.clickable {
+  cursor: pointer;
+}
+
+.metricCard.clickable:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 10px 24px rgba(15, 23, 42, 0.10);
+}
+
+.boatsGrid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(420px, 1fr));
+  align-items: start;
+  gap: 22px;
+}
+
+.boatCard {
+  position: relative;
+  min-width: 0;
+  padding: 20px;
+  overflow: hidden;
+  border: 1px solid #e5dccd;
+  border-radius: 12px;
+  background: #fffdf9;
+  color: #17243d;
+  box-shadow: 0 2px 8px rgba(15, 23, 42, 0.04);
+  cursor: pointer;
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+
+.boatCard:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 10px 28px rgba(15, 23, 42, 0.08);
+}
+
+.boatCard.cardOk {
+  background: linear-gradient(180deg, #eafaf0 0%, #f7fcf8 13%, #fffdf9 34%);
+}
+
+.boatCard.cardWarning {
+  background: linear-gradient(180deg, #fff6df 0%, #fffaf2 13%, #fffdf9 34%);
+}
+
+.boatCard.cardDanger {
+  background: linear-gradient(180deg, #ffe7e7 0%, #fff4f4 13%, #fffdf9 34%);
+}
+
+.boatCardHeader {
+  display: grid;
+  grid-template-columns: 170px minmax(0, 1fr) auto;
+  align-items: start;
+  gap: 18px;
+  margin-bottom: 18px;
+}
+
+.boatImageBox {
+  position: relative;
+  width: 170px;
+  height: 130px;
+  overflow: hidden;
+  flex-shrink: 0;
+  border-radius: 10px;
+}
+
+.boatImageBox img {
+  width: 100%;
+  height: 100%;
+  display: block;
+  object-fit: cover;
+}
+
+.boatNumber {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 2;
+  width: 32px;
+  height: 32px;
+  display: grid;
+  place-items: center;
+  border-radius: 0 0 6px 0;
+  background: #17243d;
+  color: #fffdf9;
+  font-size: 16px;
+  font-weight: 900;
+}
+
+.boatTitleArea {
+  min-width: 0;
+  padding-top: 16px;
+}
+
+.boatTitleArea strong {
+  display: block;
+  color: #17243d;
+  font-size: 18px;
+  line-height: 1.2;
+  font-weight: 900;
+  overflow-wrap: anywhere;
+}
+
+.boatTitleArea span {
+  display: block;
+  margin-top: 7px;
+  color: #17243d;
+  font-size: 15px;
+  line-height: 1.25;
+  font-weight: 800;
+  overflow-wrap: anywhere;
+}
+
+.boatStatus {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  padding-top: 16px;
+  color: #16a34a;
+  font-size: 14px;
+  line-height: 1;
+  font-weight: 900;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.boatStatus svg {
+  width: 24px;
+  height: 24px;
+  flex-shrink: 0;
+}
+
+.cardWarning .boatStatus {
+  color: #f59e0b;
+}
+
+.cardDanger .boatStatus {
+  color: #ef4444;
+}
+
+.boatProgressArea {
+  display: grid;
+  grid-template-columns: 120px minmax(0, 1fr);
+  align-items: center;
+  gap: 18px;
+  margin-bottom: 16px;
+}
+
+.occupationBox {
+  text-align: center;
+}
+
+.occupationBox > span,
+.mainProgressBox > span {
+  display: block;
+  margin-bottom: 8px;
+  color: #17243d;
+  font-size: 11px;
+  line-height: 1.15;
+  font-weight: 900;
+  text-transform: uppercase;
+}
+
+.occupationCircle {
+  position: relative;
+  width: 80px;
+  height: 80px;
+  display: grid;
+  place-items: center;
+  margin: 0 auto;
+  color: #16a34a;
+}
+
+.occupationCircle svg {
+  position: absolute;
+  inset: 0;
+  width: 80px;
+  height: 80px;
+  transform: rotate(-90deg);
+}
+
+.occupationBg,
+.occupationProgress {
+  fill: none;
+  stroke-width: 4;
+}
+
+.occupationBg {
+  stroke: #dcfce7;
+}
+
+.occupationProgress {
+  stroke: #16a34a;
+  stroke-linecap: round;
+  transition: stroke-dasharray 0.4s ease;
+}
+
+.occupationCircle strong {
+  position: relative;
+  z-index: 1;
+  font-size: 22px;
+  line-height: 1;
+  font-weight: 900;
+}
+
+.cardWarning .occupationCircle {
+  color: #f59e0b;
+}
+
+.cardWarning .occupationBg {
+  stroke: #fef3c7;
+}
+
+.cardWarning .occupationProgress {
+  stroke: #f59e0b;
+}
+
+.cardDanger .occupationCircle {
+  color: #ef4444;
+}
+
+.cardDanger .occupationBg {
+  stroke: #fee2e2;
+}
+
+.cardDanger .occupationProgress {
+  stroke: #ef4444;
+}
+
+.mainProgressBox {
+  min-width: 0;
+  text-align: center;
+}
+
+.mainProgressBox strong {
+  display: block;
+  margin: 2px 0 10px;
+  color: #17243d;
+  font-size: 24px;
+  line-height: 1;
+  font-weight: 900;
+}
+
+.mainProgressBar {
+  width: 100%;
+  height: 10px;
+  overflow: hidden;
+  border-radius: 999px;
+  background: #eee7dc;
+}
+
+.mainProgressBar div {
+  height: 100%;
+  border-radius: 999px;
+  background: linear-gradient(90deg, #1d4ed8, #22c55e);
+  transition: width 0.4s ease;
+}
+
+.cardWarning .mainProgressBar div {
+  background: linear-gradient(90deg, #f59e0b, #ef4444);
+}
+
+.cardDanger .mainProgressBar div {
+  background: linear-gradient(90deg, #ef4444, #ef4444);
+}
+
+.boatStats {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  margin: 0 -20px;
+}
+
+.boatStats div {
+  min-width: 0;
+  padding: 11px 5px;
+  border-right: 1px solid #eee5d8;
+  text-align: center;
+  transition: background 0.2s;
+}
+
+.boatStats div:last-child {
+  border-right: none;
+}
+
+.boatStats div:hover {
+  background: #f8fbff;
+}
+
+.boatStats span {
+  display: block;
+  color: #17243d;
+  font-size: 11px;
+  line-height: 1.2;
+  font-weight: 900;
+  text-transform: uppercase;
+  overflow-wrap: anywhere;
+}
+
+.boatStats strong {
+  display: block;
+  margin-top: 7px;
+  color: #17243d;
+  font-size: 20px;
+  font-weight: 900;
+}
+
+.boatPhases {
+  padding: 15px 0 13px;
+}
+
+.sectionTitle {
+  display: block;
+  margin-bottom: 12px;
+  color: #17243d;
+  font-size: 12px;
+  font-weight: 900;
+  text-transform: uppercase;
+}
+
+.phaseTimeline {
+  position: relative;
+  display: grid;
+  grid-template-columns: repeat(var(--phase-count), minmax(0, 1fr));
+}
+
+.phaseTimeline::before {
+  content: "";
+  position: absolute;
+  top: 9px;
+  right: 14px;
+  left: 14px;
+  height: 3px;
+  border-radius: 999px;
+  background: #d9e3f0;
+}
+
+.phaseItem {
+  position: relative;
+  z-index: 2;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.phaseDot {
+  width: 18px;
+  height: 18px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 7px;
+  border: 3px solid #cbd5e1;
+  border-radius: 50%;
+  background: #fffdf9;
+}
+
+.phaseDot svg {
+  width: 11px;
+  height: 11px;
+}
+
+.phasePending {
+  border-color: #cbd5e1;
+  background: #fffdf9;
+}
+
+.phaseDone {
+  border-color: #22c55e;
+  background: #22c55e;
+  color: #fffdf9;
+}
+
+.phaseCurrent {
+  border-color: #b08b45;
+}
+
+.phaseWarning {
+  border-color: #f59e0b;
+  background: #f59e0b;
+  color: #fffdf9;
+}
+
+.phaseDanger {
+  border-color: #ef4444;
+  background: #ef4444;
+  color: #fffdf9;
+}
+
+.phaseItem small {
+  max-width: 100%;
+  color: #17243d;
+  font-size: 10px;
+  line-height: 1.2;
+  font-weight: 800;
+  text-align: center;
+  overflow-wrap: anywhere;
+}
+
+.boatFooter {
+  display: grid;
+  grid-template-columns: 0.75fr 0.75fr 1fr 1fr;
+  align-items: stretch;
+  margin-top: 14px;
+}
+
+.footerInfo,
+.footerDate {
+  min-width: 0;
+  min-height: 62px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-right: 1px solid #eee5d8;
+}
+
+.footerInfo {
+  gap: 15px;
+  padding: 0 10px;
+}
+
+.footerInfo:last-of-type {
+  border-right: 1px solid #eee5d8;
+}
+
+.footerInfo > svg {
+  width: 24px;
+  height: 24px;
+  flex-shrink: 0;
+  color: #b08b45;
+}
+
+.footerInfo .orangeIcon {
+  color: #f59e0b;
+}
+
+.footerText {
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.footerText span,
+.footerDate span {
+  color: #6b7280;
+  font-size: 11px;
+  line-height: 1.2;
+  font-weight: 900;
+  text-transform: uppercase;
+  text-align: center;
+}
+
+.footerText strong,
+.footerDate strong {
+  margin-top: 6px;
+  color: #17243d;
+  font-size: 16px;
+  line-height: 1;
+  font-weight: 900;
+  text-align: center;
+}
+
+.footerDate {
+  flex-direction: column;
+  padding: 0 8px;
+  text-align: center;
+}
+
+.footerDate:last-child {
+  border-right: none;
+}
+
+.dashboardLegend {
+  width: 100%;
+  max-width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  flex-wrap: wrap;
+  gap: 20px 28px;
+  margin-top: 18px;
+  padding: 22px;
+  overflow: hidden;
+  border: 1px solid #e5dccd;
+  border-radius: 10px;
+  background: #fffdf9;
+  box-shadow: 0 2px 8px rgba(15, 23, 42, 0.04);
+}
+
+.legendItem {
+  min-width: 0;
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  flex: 1 1 180px;
+}
+
+.legendItem > svg {
+  width: 24px;
+  height: 24px;
+  flex-shrink: 0;
+}
+
+.legendItem > div {
+  min-width: 0;
+}
+
+.legendItem strong {
+  display: block;
+  font-size: 12px;
+  line-height: 1.2;
+  font-weight: 900;
+  text-transform: uppercase;
+}
+
+.legendItem span {
+  display: block;
+  margin-top: 3px;
+  color: #6b7280;
+  font-size: 11px;
+  line-height: 1.3;
+  font-weight: 700;
+  white-space: normal;
+  overflow-wrap: anywhere;
+}
+
+.legendItem.success > svg,
+.legendItem.success strong {
+  color: #16a34a;
+}
+
+.legendItem.danger > svg,
+.legendItem.danger strong {
+  color: #ef4444;
+}
+
+.legendItem.warning > svg,
+.legendItem.warning strong {
+  color: #f59e0b;
+}
+
+@media (max-width: 1700px) {
+  .boatsGrid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  .metricsGrid {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 1500px) {
+  .boatCardHeader {
+    grid-template-columns: 145px minmax(0, 1fr);
+  }
+
+  .boatImageBox {
+    width: 145px;
+    height: 112px;
+  }
+
+  .boatStatus {
+    grid-column: 1 / -1;
+    padding-top: 0;
+  }
+}
+
+@media (max-width: 1350px) {
+  .boatsGrid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .homeHeader {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .headerActions {
+    width: 100%;
+    justify-content: flex-start;
+  }
+
+  .searchBox {
+    width: 100%;
+  }
+
+  .dashboardLegend {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    align-items: center;
+  }
+
+  .legendItem {
+    width: 100%;
+  }
+}
+
+@media (max-width: 1050px) {
+  .metricsGrid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .boatsGrid {
+    grid-template-columns: 1fr;
+  }
+
+  .boatCardHeader {
+    grid-template-columns: 170px minmax(0, 1fr) auto;
+  }
+
+  .boatImageBox {
+    width: 170px;
+    height: 130px;
+  }
+
+  .boatStatus {
+    grid-column: auto;
+    padding-top: 16px;
+  }
+
+  .dashboardLegend {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 18px;
+    padding: 18px;
+  }
+
+  .legendItem {
+    min-height: 42px;
+  }
+}
+
+@media (max-width: 850px) {
+  .gestaoPage,
+  :global(body.sidebar-collapsed) .gestaoPage {
+    margin-left: 0;
+    padding: 75px 15px 20px;
+  }
+
+  .loading,
+  :global(body.sidebar-collapsed) .loading {
+    margin-left: 0;
+  }
+
+  .homeHeader {
+    gap: 14px;
+  }
+
+  .homeHeader h1 {
+    font-size: 23px;
+  }
+
+  .tabs {
+    gap: 20px;
+    margin-top: 13px;
+  }
+
+  .tabs button {
+    font-size: 12px;
+  }
+
+  .headerActions {
+    display: grid;
+    grid-template-columns: 1fr auto auto;
+    gap: 10px;
+  }
+
+  .phaseFilter {
+    width: 100%;
+    min-width: 0;
+    grid-column: 1 / -1;
+  }
+
+  .searchBox {
+    width: 100%;
+    min-width: 0;
+  }
+
+  .refreshBtn {
+    padding: 0 12px;
+  }
+
+  .metricsGrid,
+  .boatsGrid {
+    grid-template-columns: 1fr;
+  }
+
+  .boatCard {
+    padding: 16px;
+  }
+
+  .boatCardHeader {
+    grid-template-columns: 100px minmax(0, 1fr);
+    gap: 14px;
+  }
+
+  .boatImageBox {
+    width: 100px;
+    height: 82px;
+  }
+
+  .boatTitleArea {
+    padding-top: 7px;
+  }
+
+  .boatTitleArea strong {
+    font-size: 16px;
+  }
+
+  .boatTitleArea span {
+    font-size: 14px;
+  }
+
+  .boatStatus {
+    grid-column: 1 / -1;
+    margin-top: 0;
+    padding-top: 0;
+  }
+
+  .boatProgressArea {
+    grid-template-columns: 1fr;
+  }
+
+  .boatStats {
+    margin: 0 -16px;
+  }
+
+  .boatFooter {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .footerInfo,
+  .footerDate {
+    border-bottom: 1px solid #eee5d8;
+  }
+
+  .footerInfo:nth-child(2),
+  .footerDate:last-child {
+    border-right: none;
+  }
+
+  .footerDate {
+    align-items: center;
+    padding-left: 0;
+    text-align: center;
+  }
+
+  .dashboardLegend {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 580px) {
+  .gestaoPage {
+    padding-right: 12px;
+    padding-left: 12px;
+  }
+
+  .homeHeader h1 {
+    font-size: 20px;
+    line-height: 1.2;
+  }
+
+  .headerActions {
+    grid-template-columns: 1fr auto;
+  }
+
+  .searchBox {
+    grid-column: 1 / -1;
+  }
+
+  .refreshBtn {
+    justify-content: center;
+  }
+
+  .metricsGrid {
+    gap: 10px;
+  }
+
+  .metricCard {
+    min-height: 86px;
+    padding: 12px;
+  }
+
+  .metricCard strong {
+    font-size: 23px;
+  }
+
+  .boatCardHeader {
+    grid-template-columns: 88px minmax(0, 1fr);
+    gap: 12px;
+  }
+
+  .boatImageBox {
+    width: 88px;
+    height: 74px;
+  }
+
+  .boatNumber {
+    width: 28px;
+    height: 28px;
+    font-size: 14px;
+  }
+
+  .boatTitleArea strong {
+    font-size: 15px;
+  }
+
+  .boatTitleArea span {
+    margin-top: 5px;
+    font-size: 13px;
+  }
+
+  .boatStatus {
+    font-size: 12px;
+  }
+
+  .boatStatus svg {
+    width: 21px;
+    height: 21px;
+  }
+
+  .boatStats {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .boatStats div:nth-child(2) {
+    border-right: none;
+  }
+
+  .boatStats div:nth-child(-n + 2) {
+    border-bottom: 1px solid #eee5d8;
+  }
+
+  .phaseTimeline {
+    gap: 2px;
+  }
+
+  .phaseItem small {
+    font-size: 8px;
+  }
+
+  .boatFooter {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .footerInfo {
+    gap: 8px;
+    padding: 0 6px;
+  }
+
+  .footerInfo > svg {
+    width: 21px;
+    height: 21px;
+  }
+
+  .footerText strong,
+  .footerDate strong {
+    font-size: 14px;
+  }
+
+  .dashboardLegend {
+    grid-template-columns: 1fr;
+    gap: 14px;
+    padding: 16px;
+  }
+
+  .legendItem {
+    width: 100%;
+    min-height: auto;
+    flex: none;
+  }
+}
+
+/* ===== NOVO ESTILO PORTAL INTERMARINE ===== */
+
+.gestaoPage {
+  background: #f7f5f0;
+  color: #17243d;
+}
+
+.homeHeader h1,
+.metricCard strong,
+.metricCard span,
+.boatTitleArea strong,
+.boatTitleArea span {
+  color: #10213d;
+}
+
+.metricCard,
+.boatCard,
+.dashboardLegend {
+  border: 1px solid #e6dfd3;
+  border-radius: 22px;
+  background: #fffdf9;
+  box-shadow: 0 8px 25px rgba(18, 30, 50, .05);
+}
+
+.metricCard:hover,
+.boatCard:hover {
+  box-shadow: 0 14px 35px rgba(18, 30, 50, .10);
+}
+
+.metricIcon {
+  border-radius: 14px;
+  background: #f3ede3;
+}
+
+.phaseFilter,
+.refreshBtn,
+.searchBox {
+  border: 1px solid #ddd3c3;
+  border-radius: 14px;
+  background: #fffdf9;
+}
+
+.tabs button {
+  color: #17243d;
+}
+
+.tabs button.active::after {
+  background: #b08b45;
+}
+
+.boatCard {
+  padding: 22px;
+}
+
+.boatCardHeader {
+  margin-bottom: 22px;
+}
+
+.boatNumber {
+  background: #17243d;
+}
+
+.boatStats {
+  border-top: 1px solid #eee5d8;
+}
+
+.boatStats span {
+  color: #8d7544;
+}
+
+.boatStats strong {
+  color: #17243d;
+}
+
+.mainProgressBar {
+  background: #eee7dc;
+}
+
+.mainProgressBar div {
+  background: linear-gradient(90deg,#17243d,#b08b45);
+}
+
+.dashboardLegend {
+  padding: 24px;
+}
+
+.sectionTitle,
+.legendItem strong {
+  color: #b08b45;
+}
+
+.searchBox input {
+  color: #17243d;
+}
+
+.metricCard small,
+.legendItem span {
+  color: #6b7280;
+}
+
+@media(max-width:850px){
+  .gestaoPage{
+    background:#f7f5f0;
+  }
+
+  .metricCard,
+  .boatCard,
+  .dashboardLegend{
+    border-radius:18px;
+  }
+}
+
+/* ===== INTERMARINE DESIGN SYSTEM COLORS ===== */
+
+.gestaoPage,
+.loading {
+  background:#f7f5f0;
+}
+
+.metricCard,
+.boatCard,
+.dashboardLegend {
+  border-radius:22px;
+  border-color:#e5dccd;
+  background:#fffdf9;
+  box-shadow:0 8px 25px rgba(23,36,61,.06);
+}
+
+.metricIcon {
+  background:#f3ede3;
+}
+
+.homeHeader h1,
+.metricCard strong,
+.metricCard span,
+.boatTitleArea strong,
+.boatTitleArea span,
+.boatStats strong {
+  color:#17243d;
+}
+
+.eyebrow,
+.sectionTitle,
+.legendItem strong {
+  color:#b08b45;
+}
+
+.phaseFilter,
+.refreshBtn,
+.searchBox {
+  border-color:#e5dccd;
+  background:#fffdf9;
+}
+
+.tabs button.active::after {
+  background:#b08b45;
+}
+
+.boatNumber {
+  background:#17243d;
+}
+
+.mainProgressBar div {
+  background:linear-gradient(90deg,#17243d,#b08b45);
+}
+
+table thead {
+  background:#f4efe6;
+}
+
+/* =====================================================
+   PADRÃO VISUAL PORTAL INTERMARINE
+   Aplicado para manter todas as aplicações com a mesma identidade
+===================================================== */
+
+.gestaoPage {
+  background: #f7f5f0;
+  color: #17243d;
+}
+
+.homeHeader h1 {
+  color: #17243d;
+  letter-spacing: -0.5px;
+}
+
+.eyebrow,
+.sectionTitle,
+.legendItem strong {
+  color: #b08b45;
+}
+
+.metricCard,
+.boatCard,
+.dashboardLegend {
+  background: #fffdf9;
+  border: 1px solid #e5dccd;
+  border-radius: 22px;
+  box-shadow: 0 8px 25px rgba(23, 36, 61, .06);
+}
+
+.metricCard:hover,
+.boatCard:hover {
+  box-shadow: 0 14px 35px rgba(23, 36, 61, .10);
+}
+
+.metricIcon {
+  background: #f3ede3;
+}
+
+.metricCard strong,
+.metricCard span,
+.boatTitleArea strong,
+.boatTitleArea span,
+.boatStats strong {
+  color: #17243d;
+}
+
+.metricCard small,
+.legendItem span,
+.footerText span,
+.footerDate span {
+  color: #6b7280;
+}
+
+.phaseFilter,
+.refreshBtn,
+.searchBox {
+  border-color: #e5dccd;
+  background: #fffdf9;
+  border-radius: 14px;
+}
+
+.phaseFilter:focus,
+.searchBox:focus-within {
+  border-color: #b08b45;
+  box-shadow: 0 0 0 3px rgba(176,139,69,.12);
+}
+
+.tabs button {
+  color: #17243d;
+}
+
+.tabs button.active::after {
+  background: #b08b45;
+}
+
+.boatNumber {
+  background: #17243d;
+}
+
+.boatStats {
+  border-top: 1px solid #eee5d8;
+}
+
+.boatStats span {
+  color: #8d7544;
+}
+
+.mainProgressBar {
+  background: #eee7dc;
+}
+
+.mainProgressBar div {
+  background: linear-gradient(90deg,#17243d,#b08b45);
+}
+
+.dashboardLegend {
+  padding: 24px;
+}
+
+.phaseCurrent {
+  border-color: #b08b45;
+}
+
+.phaseDot {
+  background: #fffdf9;
+}
+
+table thead {
+  background: #f4efe6;
+}
+
+/* =====================================================
+   AJUSTE FINAL - PADRÃO VISUAL PORTAL INTERMARINE
+   Mantém estrutura, tamanhos e posições originais
+===================================================== */
+
+.gestaoPage {
+  background: #f8f6f1;
+}
+
+.metricCard,
+.boatCard,
+.dashboardLegend {
+  background: #ffffff;
+  border: 1px solid #e7ddcc;
+  border-radius: 24px;
+  box-shadow: 0 10px 30px rgba(23, 36, 61, 0.06);
+}
+
+.metricCard:hover,
+.boatCard:hover {
+  box-shadow: 0 18px 40px rgba(23, 36, 61, 0.12);
+}
+
+.metricIcon {
+  background: #f4eee4;
+  border-radius: 16px;
+}
+
+.homeHeader h1,
+.metricCard strong,
+.metricCard span,
+.boatTitleArea strong,
+.boatTitleArea span {
+  color: #12233f;
+}
+
+.phaseFilter,
+.refreshBtn,
+.searchBox {
+  background: #ffffff;
+  border: 1px solid #ded2bf;
+  border-radius: 16px;
+}
+
+.searchBox input {
+  color: #12233f;
+}
+
+.phaseFilter:focus,
+.searchBox:focus-within {
+  border-color: #b08b45;
+  box-shadow: 0 0 0 4px rgba(176,139,69,.12);
+}
+
+.tabs button.active::after {
+  background: #b08b45;
+}
+
+.boatCard {
+  border-radius: 24px;
+}
+
+.boatNumber {
+  background: #12233f;
+}
+
+.boatStats span,
+.sectionTitle,
+.legendItem strong {
+  color: #b08b45;
+}
+
+.boatStats strong,
+.footerText strong,
+.footerDate strong {
+  color: #12233f;
+}
+
+.mainProgressBar {
+  background: #eee6d8;
+}
+
+.mainProgressBar div {
+  background: linear-gradient(90deg, #12233f, #b08b45);
+}
+
+.dashboardLegend {
+  border-radius: 24px;
+}
+
+table thead {
+  background: #f5efe5;
+}

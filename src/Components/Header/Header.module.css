@@ -23,9 +23,7 @@
 
   border-right: 1px solid rgba(255, 255, 255, 0.08);
 
-  box-shadow:
-    8px 0 30px
-    rgba(15, 23, 42, 0.16);
+  box-shadow: 8px 0 30px rgba(15, 23, 42, 0.16);
 
   transition:
     width 0.25s ease,
@@ -35,14 +33,12 @@
 
 .sidebar.collapsed {
   width: 76px;
-
   padding: 16px 10px;
 }
 
 .sidebarTop {
   display: flex;
   flex-direction: column;
-
   gap: 26px;
 }
 
@@ -93,7 +89,6 @@
   border-radius: 10px;
 
   background: transparent;
-
   color: #e8eefc;
 
   cursor: pointer;
@@ -105,9 +100,7 @@
 
 .toggleBtn:hover {
   color: #ffffff;
-
-  background:
-    rgba(255, 255, 255, 0.1);
+  background: rgba(255, 255, 255, 0.1);
 }
 
 .toggleBtn svg {
@@ -116,13 +109,12 @@
 }
 
 /* =========================
-   MENU
+   MENU PRINCIPAL
 ========================= */
 
 .menu {
   display: flex;
   flex-direction: column;
-
   gap: 6px;
 }
 
@@ -138,8 +130,7 @@
 
   border-radius: 12px;
 
-  color:
-    rgba(255, 255, 255, 0.78);
+  color: rgba(255, 255, 255, 0.78);
 
   text-decoration: none;
 
@@ -153,7 +144,6 @@
 
 .sidebar.collapsed .menuLink {
   justify-content: center;
-
   padding: 0;
 }
 
@@ -169,16 +159,52 @@
 }
 
 .menuLink:hover {
-  background:
-    rgba(255, 255, 255, 0.1);
-
+  background: rgba(255, 255, 255, 0.1);
   color: #fff;
 }
 
 .menuLink.active {
   background: #2563eb;
-
   color: #fff;
+}
+
+/* =========================
+   SEGUNDO GRUPO DE LINKS
+========================= */
+
+.menuDivider {
+  width: 100%;
+  height: 1px;
+
+  margin: 20px 0 10px;
+
+  background: rgba(255, 255, 255, 0.12);
+}
+
+.menuSectionTitle {
+  display: block;
+
+  padding: 0 12px;
+  margin-bottom: 4px;
+
+  color: rgba(255, 255, 255, 0.45);
+
+  font-size: 0.67rem;
+  font-weight: 700;
+
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+}
+
+.secondaryMenu {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.sidebar.collapsed .menuDivider {
+  margin: 20px 4px 10px;
+  width: calc(100% - 8px);
 }
 
 /* =========================
@@ -194,14 +220,11 @@
 
   padding-top: 14px;
 
-  border-top:
-    1px solid
-    rgba(255, 255, 255, 0.1);
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
 }
 
 .sidebar.collapsed .sidebarBottom {
   flex-direction: column;
-
   justify-content: center;
 }
 
@@ -227,7 +250,6 @@
   border-radius: 50%;
 
   background: #2563eb;
-
   color: #fff;
 
   font-size: 0.9rem;
@@ -250,8 +272,7 @@
 
   margin-top: 3px;
 
-  color:
-    rgba(255, 255, 255, 0.62);
+  color: rgba(255, 255, 255, 0.62);
 
   font-size: 0.72rem;
 
@@ -271,8 +292,7 @@
 
   background: transparent;
 
-  color:
-    rgba(255, 255, 255, 0.72);
+  color: rgba(255, 255, 255, 0.72);
 
   cursor: pointer;
 
@@ -282,9 +302,7 @@
 }
 
 .logoutBtn:hover {
-  background:
-    rgba(239, 68, 68, 0.18);
-
+  background: rgba(239, 68, 68, 0.18);
   color: #fff;
 }
 
@@ -321,9 +339,7 @@
 
     cursor: pointer;
 
-    box-shadow:
-      0 10px 24px
-      rgba(15, 23, 42, 0.18);
+    box-shadow: 0 10px 24px rgba(15, 23, 42, 0.18);
   }
 
   .mobileMenuBtn svg {
@@ -339,8 +355,7 @@
 
     z-index: 180;
 
-    background:
-      rgba(15, 23, 42, 0.45);
+    background: rgba(15, 23, 42, 0.45);
   }
 
   .sidebar,
@@ -349,34 +364,27 @@
 
     padding: 16px 14px;
 
-    transform:
-      translateX(-100%);
+    transform: translateX(-100%);
 
     z-index: 220;
   }
 
   .sidebar.mobileOpen {
-    transform:
-      translateX(0);
+    transform: translateX(0);
   }
 
   .sidebar.collapsed .sidebarHeader {
-    justify-content:
-      space-between;
+    justify-content: space-between;
   }
 
   .sidebar.collapsed .menuLink {
-    justify-content:
-      flex-start;
-
+    justify-content: flex-start;
     padding: 0 12px;
   }
 
   .sidebar.collapsed .sidebarBottom {
     flex-direction: row;
-
-    justify-content:
-      space-between;
+    justify-content: space-between;
   }
 
   .sidebar.collapsed .logoLink {
@@ -385,5 +393,10 @@
 
   .sidebar.collapsed .logoImg {
     display: block;
+  }
+
+  .sidebar.collapsed .menuDivider {
+    width: 100%;
+    margin: 20px 0 10px;
   }
 }

@@ -22,6 +22,10 @@ import OrdemDetalhe from './Pages/OrdemDetalhe';
 import OperadoresStatus from './Pages/OperadoresStatus';
 import ParalisacaoOperador from './Pages/ParalisacaoOperador';
 
+import ProducaoCopy from './Pages/DashboardProducaoCopy';
+import GestaoCopy from './Pages/GestaoProducao copy';
+import ProdutividadeCopy from './Pages/ProdutividadeOperador copy';
+
 function ProtectedRoute({ children }) {
   if (!authService.isLoggedIn()) {
     return <Navigate to="/login" replace />;
@@ -88,6 +92,21 @@ const router = createBrowserRouter([
       {
         path: 'paralisacao-operador/:tipo/:id',
         element: <ParalisacaoOperador />,
+      },
+
+      {
+        path: 'gestao-copy',
+        element: <GestaoCopy />,
+      },
+
+      {
+        path: 'producao-copy',
+        element: <ProducaoCopy />,
+      },
+
+      {
+        path: 'produtividade-copy',
+        element: <ProdutividadeCopy />,
       },
     ],
   },
