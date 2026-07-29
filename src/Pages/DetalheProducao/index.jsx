@@ -29,6 +29,7 @@ import {
 } from 'react-icons/md';
 
 import PageLoading from '../../Components/PageLoading';
+import ModalAtrelarOperador from '../../Components/ModalAtrelarOperador/ModalAtrelarOperador';
 
 import gestaoProducaoService from '../../Services/gestaoProducaoService';
 import detalheProducaoService from '../../Services/detalheProducaoService';
@@ -55,33 +56,6 @@ const miniFactoryPhaseTemplates = [
   { number: 6, name: 'Pré Montagem', color: 'blue' },
   { number: 7, name: 'MF Elétrica', color: 'green' },
   { number: 8, name: 'Montagem Final', color: 'navy' },
-];
-
-const operadoresMock = [
-  {
-    id: 1,
-    nome: 'João Silva Santos',
-    ra: '1246',
-    area: 'Laminação',
-    lider: 'Carlos Silva',
-    status: 'Disponível',
-  },
-  {
-    id: 2,
-    nome: 'Marcos Lima',
-    ra: '1247',
-    area: 'Montagem Final E1',
-    lider: 'Carlos Silva',
-    status: 'Disponível',
-  },
-  {
-    id: 3,
-    nome: 'Pedro Alves',
-    ra: '1248',
-    area: 'Pré-Montagem',
-    lider: 'Ana Souza',
-    status: 'Disponível',
-  },
 ];
 
 const statusLabels = {
@@ -571,12 +545,14 @@ export default function DetalheProducao() {
   const [historySearch, setHistorySearch] = useState('');
 
   const [activeActionOrder, setActiveActionOrder] = useState(null);
-  const [showAttachOperatorModal, setShowAttachOperatorModal] = useState(false);
-  const [selectedOperator, setSelectedOperator] = useState(null);
   const [actionMenuPosition, setActionMenuPosition] = useState({
     top: 0,
     left: 0,
   });
+  const [activeActionPhase, setActiveActionPhase] = useState(null);
+  const [showAttachOperatorModal, setShowAttachOperatorModal] = useState(false);
+  const [attachOperatorOrder, setAttachOperatorOrder] = useState(null);
+  const [attachOperatorPhase, setAttachOperatorPhase] = useState(null);
 
   const actionButtonRef = useRef(null);
 
@@ -745,7 +721,7 @@ export default function DetalheProducao() {
     navigate('/operadores-aguardando-inicio');
   }
 
-  function openActionMenu(order, event) {
+  function openActionMenu(order, phase, event) {
     event.stopPropagation();
 
     const button = event.currentTarget;
@@ -773,6 +749,50 @@ export default function DetalheProducao() {
     });
 
     setActiveActionOrder(currentOrder ?? order);
+    setActiveActionPhase(phase);
+  }
+
+  function openAttachOperatorModal() {
+    if (!activeActionOrder) {
+      return;
+    }
+
+    setAttachOperatorOrder(activeActionOrder);
+    setAttachOperatorPhase(activeActionPhase);
+    setShowAttachOperatorModal(true);
+    setActiveActionOrder(null);
+    setActiveActionPhase(null);
+  }
+
+  function closeAttachOperatorModal() {
+    setShowAttachOperatorModal(false);
+    setAttachOperatorOrder(null);
+    setAttachOperatorPhase(null);
+  }
+
+  function handleAttachOperatorConfirm({ ordem, operador }) {
+    setPhases((currentPhases) =>
+      currentPhases.map((phase) => ({
+        ...phase,
+        ofs: phase.ofs.map((item) =>
+          item.id === ordem.id
+            ? { ...item, operator: operador.nome, ra: operador.ra }
+            : item,
+        ),
+        orps: phase.orps.map((item) =>
+          item.id === ordem.id
+            ? { ...item, operator: operador.nome, ra: operador.ra }
+            : item,
+        ),
+        ors: phase.ors.map((item) =>
+          item.id === ordem.id
+            ? { ...item, operator: operador.nome, ra: operador.ra }
+            : item,
+        ),
+      })),
+    );
+
+    closeAttachOperatorModal();
   }
 
   function executeOrderAction(actionName) {
@@ -781,11 +801,6 @@ export default function DetalheProducao() {
     }
 
     console.log(actionName, activeActionOrder);
-
-    if (actionName === 'Atrelar operador') {
-      setSelectedOperator(null);
-      setShowAttachOperatorModal(true);
-    }
 
     setActiveActionOrder(null);
   }
@@ -1071,21 +1086,27 @@ export default function DetalheProducao() {
                     title="OF - Ordens de Fabricação"
                     emptyMessage="Nenhuma OF cadastrada nesta fase."
                     orders={phase.ofs}
-                    onOpenActions={openActionMenu}
+                    onOpenActions={(order, event) =>
+                      openActionMenu(order, phase, event)
+                    }
                   />
 
                   <OrderSection
                     title="ORP - Ordens de Reprocesso"
                     emptyMessage="Nenhuma ORP cadastrada nesta fase."
                     orders={phase.orps}
-                    onOpenActions={openActionMenu}
+                    onOpenActions={(order, event) =>
+                      openActionMenu(order, phase, event)
+                    }
                   />
 
                   <OrderSection
                     title="OR - Ordens de Retrabalho"
                     emptyMessage="Nenhuma OR cadastrada nesta fase."
                     orders={phase.ors}
-                    onOpenActions={openActionMenu}
+                    onOpenActions={(order, event) =>
+                      openActionMenu(order, phase, event)
+                    }
                   />
                 </div>
               </div>
@@ -1107,10 +1128,7 @@ export default function DetalheProducao() {
           }}
           onClick={(event) => event.stopPropagation()}
         >
-          <button
-            type="button"
-            onClick={() => executeOrderAction('Atrelar operador')}
-          >
+          <button type="button" onClick={openAttachOperatorModal}>
             <MdPersonAdd />
             Atrelar operador
           </button>
@@ -1154,76 +1172,14 @@ export default function DetalheProducao() {
         </div>
       )}
 
-      {showAttachOperatorModal && (
-        <div
-          className={styles.replannedModalOverlay}
-          onClick={() => setShowAttachOperatorModal(false)}
-        >
-          <div
-            className={styles.replannedModal}
-            onClick={(event) => event.stopPropagation()}
-          >
-            <header className={styles.modalHeader}>
-              <div>
-                <span>Ordem selecionada</span>
-                <h2>Atrelar operador</h2>
-              </div>
-
-              <button
-                type="button"
-                className={styles.modalClose}
-                onClick={() => setShowAttachOperatorModal(false)}
-              >
-                <MdClose />
-              </button>
-            </header>
-
-            <div className={styles.operatorAttachInfo}>
-              <strong>{activeActionOrder?.code}</strong>
-              <span>{activeActionOrder?.process}</span>
-            </div>
-
-            <div className={styles.operatorModalList}>
-              {operadoresMock.map((operator) => (
-                <button
-                  key={operator.id}
-                  type="button"
-                  className={
-                    selectedOperator?.id === operator.id
-                      ? styles.selectedOperator
-                      : ''
-                  }
-                  onClick={() => setSelectedOperator(operator)}
-                >
-                  <MdPersonAdd />
-
-                  <div>
-                    <strong>{operator.nome}</strong>
-                    <span>
-                      RA: {operator.ra} • {operator.area}
-                    </span>
-                    <small>
-                      Líder: {operator.lider} • {operator.status}
-                    </small>
-                  </div>
-                </button>
-              ))}
-            </div>
-
-            <button
-              type="button"
-              className={styles.confirmBtn}
-              disabled={!selectedOperator}
-              onClick={() => {
-                console.log('Operador atrelado', selectedOperator);
-                setShowAttachOperatorModal(false);
-              }}
-            >
-              Confirmar atrelamento
-            </button>
-          </div>
-        </div>
-      )}
+      <ModalAtrelarOperador
+        isOpen={showAttachOperatorModal}
+        ordem={attachOperatorOrder}
+        fase={attachOperatorPhase}
+        embarcacao={boat}
+        onClose={closeAttachOperatorModal}
+        onConfirm={handleAttachOperatorConfirm}
+      />
 
       {showReplannedModal && (
         <div
