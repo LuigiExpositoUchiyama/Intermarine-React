@@ -57,6 +57,33 @@ const miniFactoryPhaseTemplates = [
   { number: 8, name: 'Montagem Final', color: 'navy' },
 ];
 
+const operadoresMock = [
+  {
+    id: 1,
+    nome: 'João Silva Santos',
+    ra: '1246',
+    area: 'Laminação',
+    lider: 'Carlos Silva',
+    status: 'Disponível',
+  },
+  {
+    id: 2,
+    nome: 'Marcos Lima',
+    ra: '1247',
+    area: 'Montagem Final E1',
+    lider: 'Carlos Silva',
+    status: 'Disponível',
+  },
+  {
+    id: 3,
+    nome: 'Pedro Alves',
+    ra: '1248',
+    area: 'Pré-Montagem',
+    lider: 'Ana Souza',
+    status: 'Disponível',
+  },
+];
+
 const statusLabels = {
   'em-andamento': 'Em andamento',
   concluida: 'Concluída',
@@ -544,6 +571,8 @@ export default function DetalheProducao() {
   const [historySearch, setHistorySearch] = useState('');
 
   const [activeActionOrder, setActiveActionOrder] = useState(null);
+  const [showAttachOperatorModal, setShowAttachOperatorModal] = useState(false);
+  const [selectedOperator, setSelectedOperator] = useState(null);
   const [actionMenuPosition, setActionMenuPosition] = useState({
     top: 0,
     left: 0,
@@ -752,6 +781,11 @@ export default function DetalheProducao() {
     }
 
     console.log(actionName, activeActionOrder);
+
+    if (actionName === 'Atrelar operador') {
+      setSelectedOperator(null);
+      setShowAttachOperatorModal(true);
+    }
 
     setActiveActionOrder(null);
   }
@@ -1007,13 +1041,13 @@ export default function DetalheProducao() {
                     </div>
 
                     <div>
-                      <span>Fim previsto</span>
-                      <strong>{phase.expectedEnd}</strong>
+                      <span>Início executado</span>
+                      <strong>{phase.executedStart}</strong>
                     </div>
 
                     <div>
-                      <span>Início executado</span>
-                      <strong>{phase.executedStart}</strong>
+                      <span>Fim previsto</span>
+                      <strong>{phase.expectedEnd}</strong>
                     </div>
 
                     <div>
@@ -1117,6 +1151,77 @@ export default function DetalheProducao() {
             <MdPersonRemove />
             Desatrelar operador
           </button>
+        </div>
+      )}
+
+      {showAttachOperatorModal && (
+        <div
+          className={styles.replannedModalOverlay}
+          onClick={() => setShowAttachOperatorModal(false)}
+        >
+          <div
+            className={styles.replannedModal}
+            onClick={(event) => event.stopPropagation()}
+          >
+            <header className={styles.modalHeader}>
+              <div>
+                <span>Ordem selecionada</span>
+                <h2>Atrelar operador</h2>
+              </div>
+
+              <button
+                type="button"
+                className={styles.modalClose}
+                onClick={() => setShowAttachOperatorModal(false)}
+              >
+                <MdClose />
+              </button>
+            </header>
+
+            <div className={styles.operatorAttachInfo}>
+              <strong>{activeActionOrder?.code}</strong>
+              <span>{activeActionOrder?.process}</span>
+            </div>
+
+            <div className={styles.operatorModalList}>
+              {operadoresMock.map((operator) => (
+                <button
+                  key={operator.id}
+                  type="button"
+                  className={
+                    selectedOperator?.id === operator.id
+                      ? styles.selectedOperator
+                      : ''
+                  }
+                  onClick={() => setSelectedOperator(operator)}
+                >
+                  <MdPersonAdd />
+
+                  <div>
+                    <strong>{operator.nome}</strong>
+                    <span>
+                      RA: {operator.ra} • {operator.area}
+                    </span>
+                    <small>
+                      Líder: {operator.lider} • {operator.status}
+                    </small>
+                  </div>
+                </button>
+              ))}
+            </div>
+
+            <button
+              type="button"
+              className={styles.confirmBtn}
+              disabled={!selectedOperator}
+              onClick={() => {
+                console.log('Operador atrelado', selectedOperator);
+                setShowAttachOperatorModal(false);
+              }}
+            >
+              Confirmar atrelamento
+            </button>
+          </div>
         </div>
       )}
 

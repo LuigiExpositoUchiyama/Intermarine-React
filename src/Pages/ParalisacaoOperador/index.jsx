@@ -11,17 +11,39 @@ import {
 } from 'react-icons/md';
 
 import PageLoading from '../../Components/PageLoading';
-
 import { getOperatorStop } from '../../Services/paralisacaoOperadorService';
 
 import styles from './ParalisacaoOperador.module.css';
 
+const pendingOrders = [
+  {
+    id: 1,
+    code: 'OF-1245',
+    boat: 'Intermarine 60',
+    area: 'Laminação',
+    description: 'Fabricação do Casco',
+    phase: 'Laminação',
+  },
+  {
+    id: 2,
+    code: 'OF-1260',
+    boat: 'Intermarine 60',
+    area: 'Montagem Final',
+    description: 'Montagem Estrutural',
+    phase: 'Montagem Final',
+  },
+];
+
 export default function ParalisacaoOperador() {
   const [loading, setLoading] = useState(true);
-
   const [operatorStop, setOperatorStop] = useState(null);
 
   const [showRemoveModal, setShowRemoveModal] = useState(false);
+  const [showOrderModal, setShowOrderModal] = useState(false);
+
+  const [selectedBoat, setSelectedBoat] = useState('');
+  const [selectedArea, setSelectedArea] = useState('');
+  const [selectedOrder, setSelectedOrder] = useState(null);
 
   useEffect(() => {
     loadData();
@@ -32,7 +54,6 @@ export default function ParalisacaoOperador() {
 
     try {
       const data = await getOperatorStop();
-
       setOperatorStop(data);
     } catch (error) {
       console.error('Erro ao carregar paralisação', error);
@@ -54,7 +75,13 @@ export default function ParalisacaoOperador() {
   }
 
   function attachNewOrder() {
-    console.log('Selecionar nova OF');
+    setShowRemoveModal(false);
+    setShowOrderModal(true);
+  }
+
+  function confirmNewOrder() {
+    console.log('Nova OF selecionada:', selectedOrder);
+    setShowOrderModal(false);
   }
 
   function paralyzeOperator() {
@@ -62,14 +89,8 @@ export default function ParalisacaoOperador() {
   }
 
   function getHistoryIcon(status) {
-    if (status === 'success') {
-      return <MdCheck />;
-    }
-
-    if (status === 'danger') {
-      return <MdPauseCircle />;
-    }
-
+    if (status === 'success') return <MdCheck />;
+    if (status === 'danger') return <MdPauseCircle />;
     return <MdSchedule />;
   }
 
@@ -77,18 +98,14 @@ export default function ParalisacaoOperador() {
     return <PageLoading message="Carregando paralisação do operador..." />;
   }
 
-  if (!operatorStop) {
-    return null;
-  }
+  if (!operatorStop) return null;
 
   return (
     <main className={styles.page}>
       <header className={styles.header}>
         <div>
           <span className={styles.breadcrumb}>Produção / Paralisação</span>
-
           <h1>Paralisação de Operadores</h1>
-
           <p>Gerencie paralisações, histórico e retorno dos colaboradores.</p>
         </div>
 
@@ -106,17 +123,13 @@ export default function ParalisacaoOperador() {
 
           <div>
             <span>Operador</span>
-
             <h2>{operatorStop.operator.name}</h2>
-
             <p>RA: {operatorStop.operator.ra}</p>
           </div>
         </div>
 
         <Info title="Área" value={operatorStop.operator.area} />
-
         <Info title="Líder" value={operatorStop.operator.leader} />
-
         <Info title="Status" value="PARALISADO" danger />
 
         <Info
@@ -131,14 +144,11 @@ export default function ParalisacaoOperador() {
           <Card title="Dados da Paralisação">
             <div className={styles.details}>
               <Info title="Início" value={operatorStop.stopData.startDate} />
-
               <Info title="Motivo" value={operatorStop.stopData.reason} />
-
               <Info
                 title="Responsável"
                 value={operatorStop.stopData.responsible}
               />
-
               <Info
                 title="Observação"
                 value={operatorStop.stopData.observation}
@@ -151,16 +161,13 @@ export default function ParalisacaoOperador() {
               {operatorStop.flow.map((step) => (
                 <div
                   key={step.title}
-                  className={`${styles.flowStep} ${
-                    step.completed ? styles.completed : ''
-                  }`}
+                  className={`${styles.flowStep} ${step.completed ? styles.completed : ''}`}
                 >
                   <div className={styles.circle}>
                     {step.completed ? <MdCheck /> : <MdSchedule />}
                   </div>
 
                   <h3>{step.title}</h3>
-
                   <p>{step.description}</p>
                 </div>
               ))}
@@ -177,9 +184,7 @@ export default function ParalisacaoOperador() {
 
                   <div>
                     <small>{item.date || 'Aguardando'}</small>
-
                     <h3>{item.title}</h3>
-
                     <p>{item.description}</p>
                   </div>
                 </div>
@@ -195,11 +200,8 @@ export default function ParalisacaoOperador() {
             </strong>
 
             <p>{operatorStop.previousOrder.description}</p>
-
             <span>Fase: {operatorStop.previousOrder.phase}</span>
-
             <span>CC: {operatorStop.previousOrder.cc}</span>
-
             <span>Embarcação: {operatorStop.previousOrder.boat}</span>
           </Card>
 
@@ -230,22 +232,86 @@ export default function ParalisacaoOperador() {
 
             <button className={styles.option} onClick={attachLastOrder}>
               <MdHistory />
-
               <div>
                 <strong>Reatrelar última OF</strong>
-
                 <span>Retornar para {operatorStop.previousOrder.code}</span>
               </div>
             </button>
 
             <button className={styles.option} onClick={attachNewOrder}>
               <MdAssignment />
-
               <div>
                 <strong>Selecionar nova OF</strong>
-
-                <span>Escolher uma nova ordem</span>
+                <span>Escolher uma nova ordem de produção</span>
               </div>
+            </button>
+          </div>
+        </div>
+      )}
+
+      {showOrderModal && (
+        <div className={styles.overlay}>
+          <div className={styles.orderModal}>
+            <header>
+              <h2>Selecionar nova OF</h2>
+
+              <button onClick={() => setShowOrderModal(false)}>
+                <MdClose />
+              </button>
+            </header>
+
+            <label>Embarcação</label>
+
+            <select
+              value={selectedBoat}
+              onChange={(e) => setSelectedBoat(e.target.value)}
+            >
+              <option value="">Selecionar embarcação</option>
+              <option>Intermarine 60</option>
+              <option>Intermarine 70</option>
+            </select>
+
+            <label>Área</label>
+
+            <select
+              value={selectedArea}
+              onChange={(e) => setSelectedArea(e.target.value)}
+            >
+              <option value="">Selecionar área</option>
+              <option>Laminação</option>
+              <option>Montagem Final</option>
+            </select>
+
+            <h3>OFs Pendentes</h3>
+
+            <div className={styles.orders}>
+              {pendingOrders
+                .filter(
+                  (item) =>
+                    (!selectedBoat || item.boat === selectedBoat) &&
+                    (!selectedArea || item.area === selectedArea),
+                )
+                .map((order) => (
+                  <button
+                    key={order.id}
+                    className={
+                      selectedOrder?.id === order.id ? styles.selectedOrder : ''
+                    }
+                    onClick={() => setSelectedOrder(order)}
+                  >
+                    <strong>{order.code}</strong>
+                    <span>{order.description}</span>
+                    <small>{order.phase}</small>
+                  </button>
+                ))}
+            </div>
+
+            <button
+              className={styles.confirmBtn}
+              disabled={!selectedOrder}
+              onClick={confirmNewOrder}
+            >
+              Confirmar OF
             </button>
           </div>
         </div>
@@ -258,9 +324,7 @@ function Info({ title, value, extra, danger }) {
   return (
     <div className={styles.info}>
       <span>{title}</span>
-
       <strong className={danger ? styles.red : ''}>{value}</strong>
-
       {extra && <small>{extra}</small>}
     </div>
   );
@@ -270,7 +334,6 @@ function Card({ title, children }) {
   return (
     <section className={styles.card}>
       <h2>{title}</h2>
-
       {children}
     </section>
   );

@@ -94,6 +94,32 @@ export default function GestaoProducao() {
   const activePhases =
     selectedDashboard === 'embarcacoes' ? phases : miniPhases;
 
+  const orderedMetrics = useMemo(() => {
+    const order = [
+      'embarcações',
+      'ofs totais',
+      'em execução',
+      'a iniciar',
+      'ofs finalizadas',
+      'pessoas',
+      'fora de produção',
+      'em paralisação',
+    ];
+
+    return [...metrics].sort((a, b) => {
+      const labelA = a.label.trim().toLowerCase();
+      const labelB = b.label.trim().toLowerCase();
+
+      const indexA = order.findIndex((item) => labelA.includes(item));
+      const indexB = order.findIndex((item) => labelB.includes(item));
+
+      const positionA = indexA === -1 ? order.length : indexA;
+      const positionB = indexB === -1 ? order.length : indexB;
+
+      return positionA - positionB;
+    });
+  }, [metrics]);
+
   const filteredItems = useMemo(() => {
     const list = selectedDashboard === 'embarcacoes' ? boats : miniFactories;
 
@@ -125,13 +151,13 @@ export default function GestaoProducao() {
 
     // OPERADORES STATUS
 
-    if (
-      label.includes('pessoas') ||
-      label.includes('fora') ||
-      label.includes('paralisação')
-    ) {
-      navigate('/operadores-status');
+    if (label.includes('fora')) {
+      navigate('/operadores-fora-producao');
+      return;
+    }
 
+    if (label.includes('pessoas') || label.includes('paralisação')) {
+      navigate('/operadores-status');
       return;
     }
 
@@ -349,7 +375,7 @@ export default function GestaoProducao() {
       </header>
 
       <section className={styles.metricsGrid}>
-        {metrics.map((metric) => {
+        {orderedMetrics.map((metric) => {
           const MetricIcon = getMetricIcon(metric.icon);
 
           const clickable = isMetricClickable(metric);
