@@ -21,11 +21,11 @@ import DetalheProducao from './Pages/DetalheProducao';
 import OrdemDetalhe from './Pages/OrdemDetalhe';
 import OperadoresStatus from './Pages/OperadoresStatus';
 import ParalisacaoOperador from './Pages/ParalisacaoOperador';
+import OperadoresForaProducao from './Pages/OperadoresForaProducao/OperadoresForaProducao';
 
 import ProducaoCopy from './Pages/DashboardProducaoCopy';
 import GestaoCopy from './Pages/GestaoProducao copy';
 import ProdutividadeCopy from './Pages/ProdutividadeOperador copy';
-import OperadoresForaProducao from './Pages/OperadoresForaProducao/OperadoresForaProducao';
 
 function ProtectedRoute({ children }) {
   if (!authService.isLoggedIn()) {
@@ -96,6 +96,11 @@ const router = createBrowserRouter([
       },
 
       {
+        path: 'operadores-fora-producao',
+        element: <OperadoresForaProducao />,
+      },
+
+      {
         path: 'gestao-copy',
         element: <GestaoCopy />,
       },
@@ -108,11 +113,6 @@ const router = createBrowserRouter([
       {
         path: 'produtividade-copy',
         element: <ProdutividadeCopy />,
-      },
-
-      {
-        path: '/operadores-fora-producao',
-        element: <OperadoresForaProducao />,
       },
     ],
   },
