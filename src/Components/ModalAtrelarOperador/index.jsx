@@ -15,7 +15,7 @@ export default function ModalAtrelarOperador({
   onConfirm,
 }) {
   const [operadores, setOperadores] = useState([]);
-  const [selectedOperatorId, setSelectedOperatorId] = useState(null);
+  const [selectedOperatorIds, setSelectedOperatorIds] = useState([]);
   const [search, setSearch] = useState('');
   const [loading, setLoading] = useState(false);
   const [confirming, setConfirming] = useState(false);
@@ -31,7 +31,7 @@ export default function ModalAtrelarOperador({
     async function loadOperators() {
       setLoading(true);
       setError('');
-      setSelectedOperatorId(null);
+      setSelectedOperatorIds([]);
       setSearch('');
 
       try {
@@ -93,10 +93,24 @@ export default function ModalAtrelarOperador({
     );
   }, [operadores, search]);
 
-  const selectedOperator = useMemo(
+  const selectedOperators = useMemo(
     () =>
-      operadores.find((operador) => operador.id === selectedOperatorId) ?? null,
-    [operadores, selectedOperatorId],
+      operadores.filter((operador) =>
+        selectedOperatorIds.includes(operador.id),
+      ),
+    [operadores, selectedOperatorIds],
+  );
+
+  const availableOperators = useMemo(
+    () =>
+      filteredOperators.filter((operador) => operador.status === 'Disponível'),
+    [filteredOperators],
+  );
+
+  const unavailableOperators = useMemo(
+    () =>
+      filteredOperators.filter((operador) => operador.status !== 'Disponível'),
+    [filteredOperators],
   );
 
   function selectOperator(operator) {
@@ -104,13 +118,66 @@ export default function ModalAtrelarOperador({
       return;
     }
 
-    setSelectedOperatorId(operator.id);
+    setSelectedOperatorIds((current) => {
+      if (current.includes(operator.id)) {
+        return current.filter((id) => id !== operator.id);
+      }
+
+      return [...current, operator.id];
+    });
+
     setError('');
   }
 
+  function renderOperatorRow(operador, disabled = false) {
+    const isSelected = selectedOperatorIds.includes(operador.id);
+
+    return (
+      <tr
+        key={operador.id}
+        className={[
+          disabled ? styles.blockedRow : styles.selectableRow,
+          isSelected ? styles.selectedRow : '',
+        ]
+          .filter(Boolean)
+          .join(' ')}
+        onClick={() => !disabled && selectOperator(operador)}
+      >
+        <td>
+          <div className={styles.nameCell}>
+            <span className={styles.radio}>{isSelected && <MdCheck />}</span>
+            <strong>{operador.nome}</strong>
+          </div>
+        </td>
+        <td>{operador.ra}</td>
+        <td>{operador.centroCusto}</td>
+        <td>{operador.area}</td>
+        <td>
+          <span
+            className={[
+              styles.status,
+              disabled ? styles.activeStatus : styles.availableStatus,
+            ].join(' ')}
+          >
+            {operador.status}
+          </span>
+        </td>
+        <td>
+          {operador.ofAtual !== '-' ? (
+            <span className={styles.currentOrder}>{operador.ofAtual}</span>
+          ) : (
+            '-'
+          )}
+        </td>
+      </tr>
+    );
+  }
+
   async function confirmAttach() {
-    if (!selectedOperator || !ordem) {
-      setError('Selecione um colaborador disponível para continuar.');
+    if (!selectedOperators.length || !ordem) {
+      setError(
+        'Selecione pelo menos um colaborador disponível para continuar.',
+      );
       return;
     }
 
@@ -121,13 +188,13 @@ export default function ModalAtrelarOperador({
       const result = await atrelarOperadorService.atrelarOperador({
         ordemId: ordem.id,
         ordemCodigo: ordem.code,
-        operadorId: selectedOperator.id,
+        operadoresIds: selectedOperatorIds,
       });
 
       onConfirm?.({
         ordem,
         fase,
-        operador: result.operador,
+        operadores: selectedOperators,
       });
     } catch (confirmError) {
       console.error('Erro ao atrelar colaborador:', confirmError);
@@ -236,59 +303,10 @@ export default function ModalAtrelarOperador({
                         Carregando colaboradores...
                       </td>
                     </tr>
-                  ) : filteredOperators.length ? (
-                    filteredOperators.map((operador) => {
-                      const isAvailable = operador.status === 'Disponível';
-                      const isSelected = selectedOperatorId === operador.id;
-
-                      return (
-                        <tr
-                          key={operador.id}
-                          className={[
-                            isAvailable
-                              ? styles.selectableRow
-                              : styles.blockedRow,
-                            isSelected ? styles.selectedRow : '',
-                          ]
-                            .filter(Boolean)
-                            .join(' ')}
-                          onClick={() => selectOperator(operador)}
-                        >
-                          <td>
-                            <div className={styles.nameCell}>
-                              <span className={styles.radio}>
-                                {isSelected && <MdCheck />}
-                              </span>
-                              <strong>{operador.nome}</strong>
-                            </div>
-                          </td>
-                          <td>{operador.ra}</td>
-                          <td>{operador.centroCusto}</td>
-                          <td>{operador.area}</td>
-                          <td>
-                            <span
-                              className={[
-                                styles.status,
-                                isAvailable
-                                  ? styles.availableStatus
-                                  : styles.activeStatus,
-                              ].join(' ')}
-                            >
-                              {operador.status}
-                            </span>
-                          </td>
-                          <td>
-                            {operador.ofAtual !== '-' ? (
-                              <span className={styles.currentOrder}>
-                                {operador.ofAtual}
-                              </span>
-                            ) : (
-                              '-'
-                            )}
-                          </td>
-                        </tr>
-                      );
-                    })
+                  ) : availableOperators.length ? (
+                    availableOperators.map((operador) =>
+                      renderOperatorRow(operador),
+                    )
                   ) : (
                     <tr>
                       <td colSpan="6" className={styles.emptyCell}>
@@ -299,6 +317,22 @@ export default function ModalAtrelarOperador({
                 </tbody>
               </table>
             </div>
+
+            <section className={styles.disabledList}>
+              <div className={styles.disabledHeader}>
+                Operadores já atrelados / indisponíveis
+              </div>
+
+              <div className={styles.tableWrap}>
+                <table>
+                  <tbody>
+                    {unavailableOperators.map((operador) =>
+                      renderOperatorRow(operador, true),
+                    )}
+                  </tbody>
+                </table>
+              </div>
+            </section>
           </section>
 
           <div className={styles.confirmationInfo}>
@@ -308,9 +342,9 @@ export default function ModalAtrelarOperador({
 
             <div>
               <strong>
-                {selectedOperator
-                  ? `${selectedOperator.nome} será atrelado à ${ordem?.code}.`
-                  : `Ao confirmar, o colaborador será atrelado à ${ordem?.code ?? 'ordem selecionada'}.`}
+                {selectedOperators.length
+                  ? `${selectedOperators.length} colaboradores serão atrelados à ${ordem?.code}.`
+                  : `Ao confirmar, os colaboradores serão atrelados à ${ordem?.code ?? 'ordem selecionada'}.`}
               </strong>
               <p>
                 O operador poderá visualizar esta ordem em seu painel individual
@@ -336,7 +370,7 @@ export default function ModalAtrelarOperador({
             type="button"
             className={styles.confirmButton}
             onClick={confirmAttach}
-            disabled={!selectedOperator || confirming}
+            disabled={!selectedOperators.length || confirming}
           >
             {confirming ? 'Confirmando...' : 'Confirmar Atrelamento'}
           </button>

@@ -8,6 +8,7 @@ const operadoresAtrelamentoMock = [
     status: 'Disponível',
     ofAtual: '-',
   },
+
   {
     id: 2,
     nome: 'LUCAS FERREIRA',
@@ -17,6 +18,7 @@ const operadoresAtrelamentoMock = [
     status: 'Disponível',
     ofAtual: '-',
   },
+
   {
     id: 3,
     nome: 'FERNANDA LIMA',
@@ -26,6 +28,7 @@ const operadoresAtrelamentoMock = [
     status: 'Disponível',
     ofAtual: '-',
   },
+
   {
     id: 4,
     nome: 'RICARDO SANTOS',
@@ -35,6 +38,7 @@ const operadoresAtrelamentoMock = [
     status: 'Disponível',
     ofAtual: '-',
   },
+
   {
     id: 5,
     nome: 'JOÃO CARLOS SILVA',
@@ -44,6 +48,7 @@ const operadoresAtrelamentoMock = [
     status: 'Ativo',
     ofAtual: 'OF-2026-00158',
   },
+
   {
     id: 6,
     nome: 'MARCOS ALMEIDA',
@@ -53,6 +58,7 @@ const operadoresAtrelamentoMock = [
     status: 'Ativo',
     ofAtual: 'OF-2026-00187',
   },
+
   {
     id: 7,
     nome: 'RAFAEL OLIVEIRA',
@@ -62,6 +68,7 @@ const operadoresAtrelamentoMock = [
     status: 'Ativo',
     ofAtual: 'OF-2026-00164',
   },
+
   {
     id: 8,
     nome: 'JULIANA MENDES',
@@ -71,6 +78,7 @@ const operadoresAtrelamentoMock = [
     status: 'Ativo',
     ofAtual: 'OF-2026-00163',
   },
+
   {
     id: 9,
     nome: 'GABRIELA SOUZA',
@@ -80,6 +88,7 @@ const operadoresAtrelamentoMock = [
     status: 'Disponível',
     ofAtual: '-',
   },
+
   {
     id: 10,
     nome: 'PEDRO HENRIQUE',
@@ -89,6 +98,7 @@ const operadoresAtrelamentoMock = [
     status: 'Disponível',
     ofAtual: '-',
   },
+
   {
     id: 11,
     nome: 'BRUNO MARTINS',
@@ -98,6 +108,7 @@ const operadoresAtrelamentoMock = [
     status: 'Disponível',
     ofAtual: '-',
   },
+
   {
     id: 12,
     nome: 'LETÍCIA ROCHA',
@@ -131,31 +142,47 @@ const atrelarOperadorService = {
         )
       : operadoresAtrelamentoMock;
 
-    return operadores.map((operador) => ({ ...operador }));
+    return operadores.map((operador) => ({
+      ...operador,
+    }));
   },
 
-  async atrelarOperador({ ordemId, ordemCodigo, operadorId }) {
+  async atrelarOperador({ ordemId, ordemCodigo, operadoresIds }) {
     await delay(600);
 
-    const operador = operadoresAtrelamentoMock.find(
-      (item) => item.id === operadorId,
+    const operadores = operadoresAtrelamentoMock.filter((operador) =>
+      operadoresIds.includes(operador.id),
     );
 
-    if (!operador) {
-      throw new Error('Colaborador não encontrado.');
+    if (!operadores.length) {
+      throw new Error('Nenhum colaborador encontrado.');
     }
 
-    if (operador.status !== 'Disponível') {
-      throw new Error('Este colaborador já está atrelado a outra ordem.');
+    const operadorIndisponivel = operadores.find(
+      (operador) => operador.status !== 'Disponível',
+    );
+
+    if (operadorIndisponivel) {
+      throw new Error(
+        `${operadorIndisponivel.nome} já está atrelado a outra ordem.`,
+      );
     }
 
-    operador.status = 'Ativo';
-    operador.ofAtual = ordemCodigo || String(ordemId);
+    operadores.forEach((operador) => {
+      operador.status = 'Ativo';
+
+      operador.ofAtual = ordemCodigo || String(ordemId);
+    });
 
     return {
       success: true,
-      message: 'Colaborador atrelado com sucesso.',
-      operador: { ...operador },
+
+      message: 'Colaboradores atrelados com sucesso.',
+
+      operadores: operadores.map((operador) => ({
+        ...operador,
+      })),
+
       ordemId,
     };
   },
@@ -172,12 +199,17 @@ const atrelarOperadorService = {
     }
 
     operador.status = 'Disponível';
+
     operador.ofAtual = '-';
 
     return {
       success: true,
+
       message: 'Colaborador desatrelado com sucesso.',
-      operador: { ...operador },
+
+      operador: {
+        ...operador,
+      },
     };
   },
 };

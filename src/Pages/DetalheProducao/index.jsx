@@ -29,10 +29,11 @@ import {
 } from 'react-icons/md';
 
 import PageLoading from '../../Components/PageLoading';
-import ModalAtrelarOperador from '../../Components/ModalAtrelarOperador/ModalAtrelarOperador';
-import ModalConfirmarInicioApontamento from '../../Components/ModalConfirmarInicioApontamento/ModalConfirmarInicioApontamento';
-import ModalIniciarApontamento from '../../Components/ModalIniciarApontamento/ModalIniciarApontamento';
-import ModalApontamentoSucesso from '../../Components/ModalApontamentoSucesso/ModalApontamentoSucesso';
+import ModalAtrelarOperador from '../../Components/ModalAtrelarOperador';
+import ModalConfirmarInicioApontamento from '../../Components/ModalConfirmarInicioApontamento';
+import ModalIniciarApontamento from '../../Components/ModalIniciarApontamento';
+import ModalApontamentoSucesso from '../../Components/ModalApontamentoSucesso';
+import ModalRetirarApontamento from '../../Components/ModalRetirarApontamento';
 
 import gestaoProducaoService from '../../Services/gestaoProducaoService';
 import detalheProducaoService from '../../Services/detalheProducaoService';
@@ -561,9 +562,14 @@ export default function DetalheProducao() {
   const [pointingOrder, setPointingOrder] = useState(null);
   const [pointingPhase, setPointingPhase] = useState(null);
   const [pointingOperator, setPointingOperator] = useState(null);
+  const [pointingOperators, setPointingOperators] = useState([]);
   const [showPointingSuccessModal, setShowPointingSuccessModal] =
     useState(false);
   const [pointingSuccessData, setPointingSuccessData] = useState(null);
+
+  const [showRemovePointingModal, setShowRemovePointingModal] = useState(false);
+  const [removePointingOrder, setRemovePointingOrder] = useState(null);
+  const [removePointingOperator, setRemovePointingOperator] = useState(null);
 
   const actionButtonRef = useRef(null);
 
@@ -729,7 +735,7 @@ export default function DetalheProducao() {
   }
 
   function openWaitingOperators() {
-    navigate('/operadores-aguardando-inicio');
+    navigate(`/operadores-aguardando-inicio/${viewType}/${boatId}`);
   }
 
   function openActionMenu(order, phase, event) {
@@ -781,23 +787,40 @@ export default function DetalheProducao() {
     setAttachOperatorPhase(null);
   }
 
-  function handleAttachOperatorConfirm({ ordem, fase, operador }) {
+  function handleAttachOperatorConfirm({ ordem, fase, operadores }) {
+    const listaOperadores = operadores ?? [];
+
     setPhases((currentPhases) =>
       currentPhases.map((currentPhase) => ({
         ...currentPhase,
         ofs: currentPhase.ofs.map((item) =>
           item.id === ordem.id
-            ? { ...item, operator: operador.nome, ra: operador.ra }
+            ? {
+                ...item,
+                operadores: listaOperadores,
+                operator: listaOperadores.map((op) => op.nome).join(', '),
+                ra: listaOperadores.map((op) => op.ra).join(', '),
+              }
             : item,
         ),
         orps: currentPhase.orps.map((item) =>
           item.id === ordem.id
-            ? { ...item, operator: operador.nome, ra: operador.ra }
+            ? {
+                ...item,
+                operadores: listaOperadores,
+                operator: listaOperadores.map((op) => op.nome).join(', '),
+                ra: listaOperadores.map((op) => op.ra).join(', '),
+              }
             : item,
         ),
         ors: currentPhase.ors.map((item) =>
           item.id === ordem.id
-            ? { ...item, operator: operador.nome, ra: operador.ra }
+            ? {
+                ...item,
+                operadores: listaOperadores,
+                operator: listaOperadores.map((op) => op.nome).join(', '),
+                ra: listaOperadores.map((op) => op.ra).join(', '),
+              }
             : item,
         ),
       })),
@@ -806,10 +829,16 @@ export default function DetalheProducao() {
     setShowAttachOperatorModal(false);
     setAttachOperatorOrder(null);
     setAttachOperatorPhase(null);
-    setPointingOrder(ordem);
-    setPointingPhase(fase);
-    setPointingOperator(operador);
-    setShowStartQuestionModal(true);
+
+    const primeiroOperador = listaOperadores[0] ?? null;
+
+    if (primeiroOperador) {
+      setPointingOrder(ordem);
+      setPointingPhase(fase);
+      setPointingOperator(primeiroOperador);
+      setPointingOperators(listaOperadores);
+      setShowStartQuestionModal(true);
+    }
   }
 
   function closeStartQuestion() {
@@ -817,6 +846,7 @@ export default function DetalheProducao() {
     setPointingOrder(null);
     setPointingPhase(null);
     setPointingOperator(null);
+    setPointingOperators([]);
   }
 
   function confirmOpenStartPointing() {
@@ -832,6 +862,7 @@ export default function DetalheProducao() {
     setPointingOrder(activeActionOrder);
     setPointingPhase(activeActionPhase);
     setPointingOperator(null);
+    setPointingOperators([]);
     setShowStartPointingModal(true);
     setActiveActionOrder(null);
     setActiveActionPhase(null);
@@ -842,9 +873,10 @@ export default function DetalheProducao() {
     setPointingOrder(null);
     setPointingPhase(null);
     setPointingOperator(null);
+    setPointingOperators([]);
   }
 
-  function handleStartPointingConfirm({ ordem, fase, operador, iniciadoEm }) {
+  function handleStartPointingConfirm({ ordem, fase, operadores, iniciadoEm }) {
     const inicioFormatado =
       iniciadoEm?.dataHora ?? iniciadoEm ?? new Date().toLocaleString('pt-BR');
 
@@ -855,8 +887,9 @@ export default function DetalheProducao() {
           item.id === ordem.id
             ? {
                 ...item,
-                operator: operador.nome,
-                ra: operador.ra,
+                operadores,
+                operator: operadores.map((op) => op.nome).join(', '),
+                ra: operadores.map((op) => op.ra).join(', '),
                 status: 'em-andamento',
                 executedStart: inicioFormatado,
               }
@@ -866,8 +899,9 @@ export default function DetalheProducao() {
           item.id === ordem.id
             ? {
                 ...item,
-                operator: operador.nome,
-                ra: operador.ra,
+                operadores,
+                operator: operadores.map((op) => op.nome).join(', '),
+                ra: operadores.map((op) => op.ra).join(', '),
                 status: 'em-andamento',
                 executedStart: inicioFormatado,
               }
@@ -877,8 +911,9 @@ export default function DetalheProducao() {
           item.id === ordem.id
             ? {
                 ...item,
-                operator: operador.nome,
-                ra: operador.ra,
+                operadores,
+                operator: operadores.map((op) => op.nome).join(', '),
+                ra: operadores.map((op) => op.ra).join(', '),
                 status: 'em-andamento',
                 executedStart: inicioFormatado,
               }
@@ -892,7 +927,8 @@ export default function DetalheProducao() {
     setPointingSuccessData({
       ordem,
       fase: fase ?? pointingPhase,
-      operador,
+      operadores,
+      operador: operadores?.[0],
       iniciadoEm,
     });
 
@@ -905,6 +941,70 @@ export default function DetalheProducao() {
     setPointingOrder(null);
     setPointingPhase(null);
     setPointingOperator(null);
+    setPointingOperators([]);
+  }
+
+  function openRemovePointingModal() {
+    if (!activeActionOrder) {
+      return;
+    }
+
+    setRemovePointingOrder(activeActionOrder);
+
+    setRemovePointingOperator({
+      nome: activeActionOrder.operator,
+      ra: activeActionOrder.ra,
+    });
+
+    setShowRemovePointingModal(true);
+
+    setActiveActionOrder(null);
+    setActiveActionPhase(null);
+  }
+
+  function closeRemovePointingModal() {
+    setShowRemovePointingModal(false);
+    setRemovePointingOrder(null);
+    setRemovePointingOperator(null);
+  }
+
+  function handleRemovePointingConfirm(data) {
+    console.log('Retirar apontamento', data);
+
+    setPhases((currentPhases) =>
+      currentPhases.map((currentPhase) => ({
+        ...currentPhase,
+        ofs: currentPhase.ofs.map((item) =>
+          item.id === data.ordem.id
+            ? {
+                ...item,
+                status: 'nao-iniciada',
+                executedStart: '-',
+              }
+            : item,
+        ),
+        orps: currentPhase.orps.map((item) =>
+          item.id === data.ordem.id
+            ? {
+                ...item,
+                status: 'nao-iniciada',
+                executedStart: '-',
+              }
+            : item,
+        ),
+        ors: currentPhase.ors.map((item) =>
+          item.id === data.ordem.id
+            ? {
+                ...item,
+                status: 'nao-iniciada',
+                executedStart: '-',
+              }
+            : item,
+        ),
+      })),
+    );
+
+    closeRemovePointingModal();
   }
 
   function executeOrderAction(actionName) {
@@ -1263,10 +1363,7 @@ export default function DetalheProducao() {
             Iniciar apontamento
           </button>
 
-          <button
-            type="button"
-            onClick={() => executeOrderAction('Retirar apontamento')}
-          >
+          <button type="button" onClick={openRemovePointingModal}>
             <MdStopCircle />
             Retirar apontamento
           </button>
@@ -1293,6 +1390,7 @@ export default function DetalheProducao() {
       <ModalConfirmarInicioApontamento
         isOpen={showStartQuestionModal}
         ordem={pointingOrder}
+        operadores={pointingOperators}
         operador={pointingOperator}
         onNo={closeStartQuestion}
         onYes={confirmOpenStartPointing}
@@ -1304,6 +1402,7 @@ export default function DetalheProducao() {
         fase={pointingPhase}
         embarcacao={boat}
         operadorPreSelecionado={pointingOperator}
+        operadoresPreSelecionados={pointingOperators}
         onClose={closeStartPointingModal}
         onConfirm={handleStartPointingConfirm}
       />
@@ -1313,8 +1412,17 @@ export default function DetalheProducao() {
         ordem={pointingSuccessData?.ordem}
         fase={pointingSuccessData?.fase}
         operador={pointingSuccessData?.operador}
+        operadores={pointingSuccessData?.operadores}
         iniciadoEm={pointingSuccessData?.iniciadoEm}
         onClose={closePointingSuccessModal}
+      />
+
+      <ModalRetirarApontamento
+        isOpen={showRemovePointingModal}
+        ordem={removePointingOrder}
+        operador={removePointingOperator}
+        onClose={closeRemovePointingModal}
+        onConfirm={handleRemovePointingConfirm}
       />
 
       {showReplannedModal && (

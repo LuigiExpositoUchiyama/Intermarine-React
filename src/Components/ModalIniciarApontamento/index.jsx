@@ -19,7 +19,7 @@ export default function ModalIniciarApontamento({
   onConfirm,
 }) {
   const [operadores, setOperadores] = useState([]);
-  const [selectedId, setSelectedId] = useState(null);
+  const [selectedIds, setSelectedIds] = useState([]);
   const [search, setSearch] = useState('');
   const [loading, setLoading] = useState(false);
   const [confirming, setConfirming] = useState(false);
@@ -48,7 +48,7 @@ export default function ModalIniciarApontamento({
               String(item.ra) === String(operadorPreSelecionado.ra)) ||
             item.podeIniciar,
         );
-        setSelectedId(preferred?.id ?? null);
+        setSelectedIds(preferred?.id ? [preferred.id] : []);
       } catch (loadError) {
         console.error(
           'Erro ao carregar operadores para apontamento:',
@@ -98,19 +98,81 @@ export default function ModalIniciarApontamento({
   }, [operadores, search]);
 
   const selected = useMemo(
-    () => operadores.find((item) => item.id === selectedId) ?? null,
-    [operadores, selectedId],
+    () => operadores.filter((item) => selectedIds.includes(item.id)),
+    [operadores, selectedIds],
   );
+
+  const availableOperators = useMemo(
+    () => filtered.filter((item) => item.podeIniciar),
+    [filtered],
+  );
+
+  const blockedOperators = useMemo(
+    () => filtered.filter((item) => !item.podeIniciar),
+    [filtered],
+  );
+
+  function renderOperatorRow(operador, disabled = false) {
+    const isSelected = selectedIds.includes(operador.id);
+
+    return (
+      <tr
+        key={operador.id}
+        className={[
+          disabled ? styles.blockedRow : styles.selectableRow,
+          isSelected ? styles.selectedRow : '',
+        ]
+          .filter(Boolean)
+          .join(' ')}
+        onClick={() => !disabled && selectOperator(operador)}
+      >
+        <td>
+          <div className={styles.nameCell}>
+            <span className={styles.radio}>{isSelected && <MdCheck />}</span>
+            <strong>{operador.nome}</strong>
+          </div>
+        </td>
+
+        <td>{operador.ra}</td>
+        <td>{operador.centroCusto}</td>
+        <td>{operador.area}</td>
+
+        <td>
+          <span
+            className={[
+              styles.status,
+              disabled ? styles.activeStatus : styles.availableStatus,
+            ].join(' ')}
+          >
+            {disabled ? operador.status : 'Pronto'}
+          </span>
+        </td>
+
+        <td>
+          {operador.ofAtual !== '-' ? (
+            <span className={styles.currentOrder}>{operador.ofAtual}</span>
+          ) : (
+            '-'
+          )}
+        </td>
+      </tr>
+    );
+  }
 
   function selectOperator(operador) {
     if (!operador.podeIniciar || confirming) return;
-    setSelectedId(operador.id);
+    setSelectedIds((current) =>
+      current.includes(operador.id)
+        ? current.filter((id) => id !== operador.id)
+        : [...current, operador.id],
+    );
+
     setError('');
   }
 
   async function confirmStart() {
-    if (!selected || !ordem) {
-      setError('Selecione um operador atrelado a esta OF.');
+    if (!selected.length || !ordem) {
+      setError('Selecione pelo menos um operador atrelado a esta OF.');
       return;
     }
     setConfirming(true);
@@ -119,12 +181,12 @@ export default function ModalIniciarApontamento({
       const result = await apontamentoOperadorService.iniciarApontamento({
         ordemId: ordem.id,
         ordemCodigo: ordem.code,
-        operador: selected,
+        operadores: selected,
       });
       onConfirm?.({
         ordem,
         fase,
-        operador: result.operador,
+        operadores: result.operadores,
         iniciadoEm: result.iniciadoEm,
       });
     } catch (confirmError) {
@@ -219,63 +281,14 @@ export default function ModalIniciarApontamento({
                         Carregando operadores...
                       </td>
                     </tr>
-                  ) : filtered.length ? (
-                    filtered.map((operador) => {
-                      const isSelected = selectedId === operador.id;
-                      return (
-                        <tr
-                          key={operador.id}
-                          className={[
-                            operador.podeIniciar
-                              ? styles.selectableRow
-                              : styles.blockedRow,
-                            isSelected ? styles.selectedRow : '',
-                          ]
-                            .filter(Boolean)
-                            .join(' ')}
-                          onClick={() => selectOperator(operador)}
-                        >
-                          <td>
-                            <div className={styles.nameCell}>
-                              <span className={styles.radio}>
-                                {isSelected && <MdCheck />}
-                              </span>
-                              <strong>{operador.nome}</strong>
-                            </div>
-                          </td>
-                          <td>{operador.ra}</td>
-                          <td>{operador.centroCusto}</td>
-                          <td>{operador.area}</td>
-                          <td>
-                            <span
-                              className={[
-                                styles.status,
-                                operador.podeIniciar
-                                  ? styles.availableStatus
-                                  : styles.activeStatus,
-                              ].join(' ')}
-                            >
-                              {operador.podeIniciar
-                                ? 'Pronto'
-                                : operador.status}
-                            </span>
-                          </td>
-                          <td>
-                            {operador.ofAtual !== '-' ? (
-                              <span className={styles.currentOrder}>
-                                {operador.ofAtual}
-                              </span>
-                            ) : (
-                              '-'
-                            )}
-                          </td>
-                        </tr>
-                      );
-                    })
+                  ) : availableOperators.length ? (
+                    availableOperators.map((operador) =>
+                      renderOperatorRow(operador),
+                    )
                   ) : (
                     <tr>
                       <td colSpan="6" className={styles.emptyCell}>
-                        Nenhum operador encontrado.
+                        Nenhum operador disponível.
                       </td>
                     </tr>
                   )}
@@ -283,6 +296,23 @@ export default function ModalIniciarApontamento({
               </table>
             </div>
           </section>
+
+          <section className={styles.disabledList}>
+            <div className={styles.disabledHeader}>
+              Operadores não disponíveis
+            </div>
+
+            <div className={styles.tableWrap}>
+              <table>
+                <tbody>
+                  {blockedOperators.map((operador) =>
+                    renderOperatorRow(operador, true),
+                  )}
+                </tbody>
+              </table>
+            </div>
+          </section>
+
           <div className={styles.confirmationInfo}>
             <span className={styles.confirmationIcon}>
               <MdCheck />
@@ -290,7 +320,7 @@ export default function ModalIniciarApontamento({
             <div>
               <strong>
                 {selected
-                  ? `O apontamento será iniciado para ${selected.nome}.`
+                  ? `O apontamento será iniciado para ${selected.map((item) => item.nome).join(', ')}.`
                   : 'Selecione o operador que iniciará o apontamento.'}
               </strong>
               <p>
@@ -314,7 +344,7 @@ export default function ModalIniciarApontamento({
             type="button"
             className={styles.confirmButton}
             onClick={confirmStart}
-            disabled={!selected || confirming}
+            disabled={!selected.length || confirming}
           >
             {confirming ? 'Iniciando...' : 'Iniciar Apontamento'}
           </button>
