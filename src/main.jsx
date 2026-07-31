@@ -19,10 +19,14 @@ import DashboardOperadores from './Pages/DashboardOperadores';
 import OperadorDetalhe from './Pages/OperadorDetalhe';
 import DetalheProducao from './Pages/DetalheProducao';
 import OrdemDetalhe from './Pages/OrdemDetalhe';
+
 import OperadoresStatus from './Pages/OperadoresStatus';
+import OperadoresParalisacao from './Pages/OperadoresParalisacao';
+
 import ParalisacaoOperador from './Pages/ParalisacaoOperador';
 import OperadoresForaProducao from './Pages/OperadoresForaProducao/OperadoresForaProducao';
 import OperadoresAguardandoInicio from './Pages/OperadoresAguardandoInicio';
+
 import ProducaoCopy from './Pages/DashboardProducaoCopy';
 import GestaoCopy from './Pages/GestaoProducao copy';
 import ProdutividadeCopy from './Pages/ProdutividadeOperador copy';
@@ -91,6 +95,11 @@ const router = createBrowserRouter([
       },
 
       {
+        path: 'operadores-paralisacao',
+        element: <OperadoresParalisacao />,
+      },
+
+      {
         path: 'paralisacao-operador/:tipo/:id',
         element: <ParalisacaoOperador />,
       },
@@ -98,6 +107,11 @@ const router = createBrowserRouter([
       {
         path: 'operadores-fora-producao',
         element: <OperadoresForaProducao />,
+      },
+
+      {
+        path: 'operadores-aguardando-inicio/:tipo/:id',
+        element: <OperadoresAguardandoInicio />,
       },
 
       {
@@ -113,11 +127,6 @@ const router = createBrowserRouter([
       {
         path: 'produtividade-copy',
         element: <ProdutividadeCopy />,
-      },
-
-      {
-        path: 'operadores-aguardando-inicio/:tipo/:id',
-        element: <OperadoresAguardandoInicio />,
       },
     ],
   },

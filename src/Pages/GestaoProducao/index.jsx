@@ -156,7 +156,12 @@ export default function GestaoProducao() {
       return;
     }
 
-    if (label.includes('pessoas') || label.includes('paralisação')) {
+    if (label.includes('paralisação')) {
+      navigate('/operadores-paralisacao');
+      return;
+    }
+
+    if (label.includes('pessoas')) {
       navigate('/operadores-status');
       return;
     }
