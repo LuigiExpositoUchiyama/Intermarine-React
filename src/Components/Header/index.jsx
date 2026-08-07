@@ -7,6 +7,7 @@ import {
   MdClose,
   MdDirectionsBoat,
   MdEngineering,
+  MdFactCheck,
   MdHome,
   MdLogout,
   MdMenu,
@@ -128,6 +129,12 @@ export default function Header() {
           </div>
 
           <nav className={styles.menu}>
+            {!sidebarCollapsed && (
+              <div className={styles.menuSection}>
+                <span>Fábrica</span>
+              </div>
+            )}
+
             <NavLink
               to="/"
               end
@@ -137,16 +144,6 @@ export default function Header() {
               <MdHome />
 
               {!sidebarCollapsed && <span>Gestão de Produção</span>}
-            </NavLink>
-
-            <NavLink
-              to="/dashboard-producao"
-              className={getNavClass}
-              onClick={closeMobileMenu}
-            >
-              <MdCalendarViewMonth />
-
-              {!sidebarCollapsed && <span>Planejamento</span>}
             </NavLink>
 
             <NavLink
@@ -169,44 +166,37 @@ export default function Header() {
               {!sidebarCollapsed && <span>Produtividade</span>}
             </NavLink>
 
-            <div className={styles.menuDivider} />
-
             {!sidebarCollapsed && (
-              <span className={styles.menuSectionTitle}>Outro Layout</span>
+              <div className={styles.menuSection}>
+                <span>Planejamento</span>
+              </div>
             )}
 
-            <div className={styles.secondaryMenu}>
-              <NavLink
-                to="/gestao-copy"
-                end
-                className={getNavClass}
-                onClick={closeMobileMenu}
-              >
-                <MdHome />
+            <NavLink
+              to="/dashboard-producao"
+              className={getNavClass}
+              onClick={closeMobileMenu}
+            >
+              <MdCalendarViewMonth />
 
-                {!sidebarCollapsed && <span>Gestão</span>}
-              </NavLink>
+              {!sidebarCollapsed && <span>Gantt</span>}
+            </NavLink>
 
-              <NavLink
-                to="/producao-copy"
-                className={getNavClass}
-                onClick={closeMobileMenu}
-              >
-                <MdCalendarViewMonth />
+            {!sidebarCollapsed && (
+              <div className={styles.menuSection}>
+                <span>Qualidade</span>
+              </div>
+            )}
 
-                {!sidebarCollapsed && <span>Planejamento</span>}
-              </NavLink>
+            <NavLink
+              to="/auditoria"
+              className={getNavClass}
+              onClick={closeMobileMenu}
+            >
+              <MdFactCheck />
 
-              <NavLink
-                to="/produtividade-copy"
-                className={getNavClass}
-                onClick={closeMobileMenu}
-              >
-                <MdEngineering />
-
-                {!sidebarCollapsed && <span>Produtividade</span>}
-              </NavLink>
-            </div>
+              {!sidebarCollapsed && <span>Auditoria</span>}
+            </NavLink>
           </nav>
         </div>
 
@@ -217,6 +207,7 @@ export default function Header() {
             {!sidebarCollapsed && (
               <div>
                 <strong>{username}</strong>
+
                 <span>Gestor de Produção</span>
               </div>
             )}

@@ -1,0 +1,825 @@
+.page{
+  width:auto;
+  max-width:100%;
+  min-height:100vh;
+  margin-left:260px;
+  padding:20px;
+  box-sizing:border-box;
+  background:var(--background);
+  color:var(--primary);
+  overflow-x:hidden;
+  transition:margin-left .25s ease;
+}
+
+:global(body.sidebar-collapsed) .page{
+  margin-left:76px;
+}
+
+
+/* ================= HEADER ================= */
+
+.pageHeader{
+  margin-bottom:20px;
+}
+
+.pageTitleArea{
+  display:flex;
+  align-items:center;
+  gap:16px;
+}
+
+.pageTitleIcon{
+  width:64px;
+  height:64px;
+  display:grid;
+  place-items:center;
+  flex-shrink:0;
+  border:1px solid var(--border);
+  border-radius:10px;
+  background:var(--card);
+  color:var(--primary);
+  box-shadow:var(--shadow-sm);
+}
+
+.pageTitleIcon svg{
+  width:34px;
+  height:34px;
+}
+
+.titleRow{
+  display:flex;
+  align-items:center;
+  gap:14px;
+  flex-wrap:wrap;
+}
+
+.titleRow h1{
+  margin:0;
+  color:var(--primary);
+  font-size:30px;
+  line-height:1.1;
+  font-weight:900;
+}
+
+.pageTitleArea p{
+  margin:8px 0 0;
+  color:var(--text-secondary);
+  font-size:16px;
+  line-height:1.3;
+  font-weight:500;
+}
+
+
+/* ================= CARDS ================= */
+
+.filtersCard,
+.auditSection,
+.footerActions{
+  border:1px solid var(--border);
+  border-radius:10px;
+  background:var(--card);
+  box-shadow:var(--shadow-sm);
+}
+
+
+/* ================= FILTROS ================= */
+
+.filtersCard{
+  padding:18px 22px;
+  margin-bottom:14px;
+}
+
+.sectionHeading{
+  display:flex;
+  align-items:center;
+  gap:10px;
+  margin-bottom:16px;
+  color:var(--primary);
+  font-size:16px;
+  font-weight:900;
+}
+
+.sectionHeading svg{
+  width:22px;
+  height:22px;
+}
+
+.sectionHeading strong{
+  font-size:16px;
+  font-weight:900;
+}
+
+.filtersGrid{
+  display:grid;
+  grid-template-columns:repeat(5,minmax(0,1fr)) 160px;
+  align-items:end;
+  gap:14px 28px;
+}
+
+.filtersGrid label{
+  min-width:0;
+  display:flex;
+  flex-direction:column;
+  gap:8px;
+}
+
+.filtersGrid span{
+  color:var(--primary);
+  font-size:13px;
+  line-height:1.2;
+  font-weight:900;
+}
+
+.filtersGrid select{
+  width:100%;
+  height:48px;
+  padding:0 44px 0 14px;
+  border:1px solid var(--border);
+  border-radius:7px;
+  outline:none;
+  background-color:var(--card);
+  color:var(--primary);
+  font-size:15px;
+  font-weight:500;
+  cursor:pointer;
+  appearance:none;
+  transition:border-color .2s ease,box-shadow .2s ease;
+  background-image:
+    linear-gradient(45deg,transparent 50%,var(--primary) 50%),
+    linear-gradient(135deg,var(--primary) 50%,transparent 50%);
+  background-position:
+    calc(100% - 18px) 20px,
+    calc(100% - 12px) 20px;
+  background-size:6px 6px;
+  background-repeat:no-repeat;
+}
+
+.filtersGrid select:hover{
+  border-color:#c4d2e3;
+}
+
+.filtersGrid select:focus{
+  border-color:var(--primary-light);
+  box-shadow:0 0 0 3px rgba(37,99,235,.12);
+}
+
+
+/* ================= BOTÕES ================= */
+
+.filterButton,
+.primaryButton,
+.cancelButton,
+.saveButton,
+.finishButton{
+  border:none;
+  outline:none;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:9px;
+  border-radius:7px;
+  font-size:14px;
+  font-weight:800;
+  cursor:pointer;
+  transition:transform .2s ease,box-shadow .2s ease,opacity .2s ease;
+}
+
+.filterButton,
+.primaryButton,
+.saveButton,
+.finishButton{
+  background:var(--primary);
+  color:#fff;
+}
+
+.filterButton:hover,
+.primaryButton:hover,
+.saveButton:hover,
+.finishButton:hover{
+  transform:translateY(-1px);
+  box-shadow:0 6px 14px rgba(7,20,95,.16);
+}
+
+.filterButton:active,
+.primaryButton:active,
+.saveButton:active,
+.finishButton:active{
+  transform:translateY(0);
+}
+
+.filterButton{
+  width:100%;
+  height:48px;
+}
+
+.filterButton svg{
+  width:22px;
+  height:22px;
+}
+
+.primaryButton{
+  min-height:44px;
+  padding:0 20px;
+}
+
+.primaryButton svg{
+  width:21px;
+  height:21px;
+}
+
+
+/* ================= SEÇÃO AUDITORIA ================= */
+
+.auditSection{
+  padding:20px;
+}
+
+.auditSectionHeader{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:18px;
+  margin-bottom:14px;
+}
+
+.auditSectionHeader h2{
+  margin:0;
+  color:var(--primary);
+  font-size:22px;
+  line-height:1.2;
+  font-weight:900;
+}
+
+
+/* ================= LISTA ================= */
+
+.auditList{
+  display:flex;
+  flex-direction:column;
+  gap:12px;
+}
+
+.auditCard{
+  overflow:hidden;
+  border:1px solid var(--border);
+  border-radius:9px;
+  background:var(--card);
+}
+
+.auditCardHeader{
+  width:100%;
+  min-height:60px;
+  padding:0 20px;
+  border:none;
+  background:var(--card);
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:16px;
+  color:var(--primary);
+  cursor:pointer;
+}
+
+.auditCardTitle{
+  min-width:0;
+  display:flex;
+  align-items:center;
+  gap:18px;
+  flex-wrap:wrap;
+}
+
+.auditCardTitle strong{
+  color:var(--primary);
+  font-size:18px;
+  line-height:1.2;
+  font-weight:900;
+}
+
+.auditHeaderActions{
+  display:flex;
+  align-items:center;
+  gap:14px;
+  flex-shrink:0;
+  color:var(--primary);
+}
+
+.auditHeaderActions svg{
+  width:21px;
+  height:21px;
+}
+
+.auditContent{
+  border-top:1px solid var(--border-light);
+}
+
+
+/* ================= META ================= */
+
+.auditMeta{
+  display:grid;
+  grid-template-columns:repeat(4,minmax(0,1fr));
+  gap:26px;
+  padding:24px 20px 20px;
+}
+
+.auditMeta>div{
+  min-width:0;
+  display:grid;
+  grid-template-columns:28px minmax(0,1fr);
+  column-gap:14px;
+  row-gap:5px;
+  align-items:start;
+}
+
+.auditMeta svg{
+  grid-row:1 / span 2;
+  width:26px;
+  height:26px;
+  margin-top:2px;
+  color:var(--primary);
+}
+
+.auditMeta span{
+  color:var(--primary);
+  font-size:13px;
+  line-height:1.2;
+  font-weight:700;
+}
+
+.auditMeta strong{
+  color:var(--primary);
+  font-size:15px;
+  line-height:1.3;
+  font-weight:500;
+}
+
+
+/* ================= TABS ================= */
+
+.tabsBar{
+  min-height:68px;
+  padding:0 18px 0 10px;
+  border-top:1px solid var(--border-light);
+  border-bottom:1px solid var(--border-light);
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:18px;
+}
+
+.tabs{
+  height:68px;
+  display:flex;
+  align-items:stretch;
+  gap:12px;
+}
+
+.tabs button{
+  position:relative;
+  height:100%;
+  padding:0 24px;
+  border:none;
+  background:transparent;
+  color:var(--primary);
+  font-size:14px;
+  font-weight:800;
+  cursor:pointer;
+}
+
+.tabs button::after{
+  content:"";
+  position:absolute;
+  right:0;
+  bottom:0;
+  left:0;
+  height:3px;
+  border-radius:999px;
+  background:transparent;
+}
+
+.tabs button.activeTab::after,
+.activeTab::after{
+  background:var(--primary);
+}
+
+.activeTab{
+  color:var(--primary);
+}
+
+
+/* ================= TABELA ================= */
+
+.tableWrap{
+  width:100%;
+  overflow-x:auto;
+}
+
+.tableWrap table{
+  width:100%;
+  min-width:1100px;
+  border-collapse:collapse;
+  table-layout:auto;
+}
+
+.tableWrap thead{
+  background:#fbfcfe;
+}
+
+.tableWrap th{
+  height:64px;
+  padding:0 24px;
+  border-bottom:1px solid var(--border-light);
+  color:var(--primary);
+  font-size:12px;
+  line-height:1.2;
+  font-weight:900;
+  text-align:left;
+  white-space:nowrap;
+}
+
+.tableWrap td{
+  height:54px;
+  padding:0 24px;
+  border-bottom:1px solid var(--border-light);
+  color:var(--primary);
+  font-size:13px;
+  line-height:1.3;
+  font-weight:500;
+  text-align:left;
+  white-space:nowrap;
+}
+
+.tableWrap tbody tr:last-child td{
+  border-bottom:none;
+}
+
+.tableWrap tbody tr{
+  transition:background .2s ease;
+}
+
+.tableWrap tbody tr:hover{
+  background:#f8fbff;
+}
+
+
+/* ================= AÇÕES DA TABELA ================= */
+
+.rowActions{
+  display:flex;
+  align-items:center;
+  gap:14px;
+}
+
+.rowActions button{
+  width:24px;
+  height:30px;
+  padding:0;
+  border:none;
+  display:grid;
+  place-items:center;
+  background:transparent;
+  color:var(--primary);
+  cursor:pointer;
+  transition:transform .15s ease,color .15s ease;
+}
+
+.rowActions button:hover{
+  transform:scale(1.12);
+  color:var(--primary-light);
+}
+
+.rowActions button svg{
+  width:19px;
+  height:19px;
+}
+
+.rowActions .deleteButton{
+  color:var(--danger);
+}
+
+.rowActions .deleteButton:hover{
+  color:#dc2626;
+}
+
+
+/* ================= STATUS ================= */
+
+.statusBadge{
+  min-height:25px;
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  padding:4px 13px;
+  border:1px solid transparent;
+  border-radius:999px;
+  font-size:10px;
+  line-height:1;
+  font-weight:900;
+  white-space:nowrap;
+}
+
+.statusProgress{
+  background:#ecfdf3;
+  border-color:#a7e8bd;
+  color:#15803d;
+}
+
+.statusDone{
+  background:#fff7e7;
+  border-color:#f7cc7d;
+  color:#d97706;
+}
+
+.statusApproved{
+  background:#ecfdf3;
+  border-color:#a7e8bd;
+  color:#15803d;
+}
+
+.statusDraft{
+  background:#f5f7fb;
+  border-color:#cbd5e1;
+  color:#475569;
+}
+
+.statusRepair{
+  background:#fff8e8;
+  border-color:#f7c96b;
+  color:#c25d00;
+}
+
+.statusWaiting{
+  background:#fff8e8;
+  border-color:#f7c96b;
+  color:#c25d00;
+}
+
+
+/* ================= GRAVIDADE ================= */
+
+.severity{
+  display:inline-flex;
+  align-items:center;
+  gap:9px;
+  color:var(--primary);
+  font-size:13px;
+  font-weight:500;
+}
+
+.severity i{
+  width:10px;
+  height:10px;
+  flex-shrink:0;
+  border-radius:50%;
+}
+
+.severityHigh i{
+  background:#ef4444;
+}
+
+.severityMedium i{
+  background:#f59e0b;
+}
+
+.severityLow i{
+  background:#16a34a;
+}
+
+
+/* ================= RESUMO ================= */
+
+.summaryTab{
+  display:grid;
+  grid-template-columns:repeat(3,minmax(0,1fr));
+  gap:16px;
+  padding:20px;
+}
+
+.summaryTab div{
+  min-height:90px;
+  padding:16px;
+  border:1px solid var(--border);
+  border-radius:9px;
+  background:#fbfcfe;
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+  gap:8px;
+}
+
+.summaryTab span{
+  color:var(--text-secondary);
+  font-size:12px;
+  font-weight:800;
+}
+
+.summaryTab strong{
+  color:var(--primary);
+  font-size:18px;
+  font-weight:900;
+}
+
+
+/* ================= FOOTER ================= */
+
+.footerActions{
+  display:grid;
+  grid-template-columns:.8fr 1.1fr 1.1fr;
+  align-items:center;
+  gap:18px;
+  margin-top:12px;
+  padding:12px 20px;
+}
+
+.cancelButton,
+.saveButton,
+.finishButton{
+  height:48px;
+}
+
+.cancelButton{
+  border:1px solid var(--border);
+  background:#fff;
+  color:var(--primary);
+}
+
+.cancelButton:hover{
+  border-color:var(--primary);
+  background:#f8fbff;
+}
+
+.cancelButton svg,
+.saveButton svg,
+.finishButton svg{
+  width:20px;
+  height:20px;
+}
+
+.finishButton:disabled{
+  opacity:.55;
+  cursor:not-allowed;
+  transform:none;
+  box-shadow:none;
+}
+
+
+/* ================= RESPONSIVO ================= */
+
+@media(max-width:1500px){
+  .filtersGrid{
+    grid-template-columns:repeat(3,minmax(0,1fr));
+  }
+
+  .filterButton{
+    width:auto;
+    padding:0 24px;
+  }
+}
+
+@media(max-width:1200px){
+  .auditMeta{
+    grid-template-columns:repeat(2,minmax(0,1fr));
+  }
+
+  .filtersGrid{
+    grid-template-columns:repeat(2,minmax(0,1fr));
+  }
+
+  .filterButton{
+    width:100%;
+  }
+}
+
+@media(max-width:850px){
+  .page,
+  :global(body.sidebar-collapsed) .page{
+    margin-left:0;
+    padding:75px 15px 20px;
+  }
+
+  .pageTitleIcon{
+    width:52px;
+    height:52px;
+  }
+
+  .pageTitleIcon svg{
+    width:28px;
+    height:28px;
+  }
+
+  .titleRow h1{
+    font-size:23px;
+  }
+
+  .pageTitleArea p{
+    font-size:14px;
+  }
+
+  .filtersGrid,
+  .auditMeta,
+  .summaryTab,
+  .footerActions{
+    grid-template-columns:1fr;
+  }
+
+  .auditSectionHeader{
+    align-items:stretch;
+    flex-direction:column;
+  }
+
+  .auditSectionHeader .primaryButton{
+    width:100%;
+  }
+
+  .tabsBar{
+    padding:12px;
+    flex-direction:column;
+    align-items:stretch;
+  }
+
+  .tabs{
+    width:100%;
+    height:auto;
+    overflow-x:auto;
+  }
+
+  .tabs button{
+    min-height:48px;
+    white-space:nowrap;
+  }
+
+  .tabsBar>.primaryButton{
+    width:100%;
+  }
+
+  .auditCardHeader{
+    padding:0 14px;
+  }
+
+  .auditCardTitle strong{
+    font-size:16px;
+  }
+
+  .footerActions{
+    padding:12px;
+  }
+}
+
+@media(max-width:580px){
+  .page{
+    padding-right:12px;
+    padding-left:12px;
+  }
+
+  .pageTitleArea{
+    align-items:flex-start;
+  }
+
+  .pageTitleIcon{
+    width:46px;
+    height:46px;
+  }
+
+  .pageTitleIcon svg{
+    width:25px;
+    height:25px;
+  }
+
+  .titleRow{
+    gap:8px;
+  }
+
+  .titleRow h1{
+    font-size:20px;
+  }
+
+  .filtersCard,
+  .auditSection{
+    padding:14px;
+  }
+
+  .filtersGrid{
+    grid-template-columns:1fr;
+  }
+
+  .auditMeta{
+    padding:18px 14px;
+  }
+
+  .auditCardHeader{
+    min-height:66px;
+  }
+
+  .auditCardTitle{
+    gap:8px;
+  }
+
+  .auditHeaderActions{
+    gap:8px;
+  }
+
+  .auditHeaderActions svg{
+    width:19px;
+    height:19px;
+  }
+}

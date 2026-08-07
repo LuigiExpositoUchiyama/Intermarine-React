@@ -2,80 +2,117 @@
 
 *,
 *::before,
-*::after {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
+*::after{
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
 }
 
 html,
 body,
-#root {
-  width: 100%;
-  min-height: 100%;
+#root{
+  width:100%;
+  min-height:100%;
 }
 
-html {
-  height: 100%;
+html{
+  height:100%;
 }
 
-body {
-  min-height: 100vh;
+body{
+  min-height:100vh;
 }
+
 
 /* ================= VARIÁVEIS ================= */
 
-:root {
-  /* Cores */
-  --color-1: #111827;
-  --color-2: #4b5563;
-  --color-3: #2563eb;
-  --color-4: #1d4ed8;
-  --color-5: #0ab39c;
-  --color-6: #f06548;
-  --color-7: #ffffff;
-  --color-8: #e5e7eb;
-  --color-9: #405189;
+:root{
 
-  /* Containers */
-  --container-desktop: 1700px;
-  --container-laptop: 1200px;
-  --container-tablet: 700px;
-  --container-mobile: 340px;
+  /* CORES */
+
+  --primary:#07145f;
+  --primary-light:#2563eb;
+  --primary-dark:#1d4ed8;
+
+  --success:#16a34a;
+  --success-bg:#dcfce7;
+
+  --warning:#f59e0b;
+  --warning-bg:#fef3c7;
+
+  --danger:#ef4444;
+  --danger-bg:#fee2e2;
+
+
+  /* TEXTOS */
+
+  --text:#07145f;
+  --text-secondary:#64748b;
+  --text-muted:#94a3b8;
+
+
+  /* FUNDOS */
+
+  --background:#f6f8fc;
+  --card:#ffffff;
+  --hover:#f8fbff;
+
+
+  /* BORDAS */
+
+  --border:#dbe5f2;
+  --border-light:#e5edf7;
+
+
+  /* SOMBRAS */
+
+  --shadow-sm:0 2px 8px rgba(15,23,42,.04);
+  --shadow-md:0 8px 18px rgba(15,23,42,.06);
+  --shadow-lg:0 10px 28px rgba(15,23,42,.08);
+
+
+  /* SIDEBAR */
+
+  --sidebar-width:260px;
+  --sidebar-collapsed:76px;
+
+
+  /* CONTAINERS */
+
+  --container-desktop:1700px;
+  --container-laptop:1200px;
+  --container-tablet:700px;
+  --container-mobile:340px; 
+
 }
+
 
 /* ================= FONTES ================= */
 
-@font-face {
-  font-family: 'Poppins';
-  src: url('./fonts/Poppins-Regular.ttf') format('truetype');
-  font-weight: 400;
-  font-style: normal;
-  font-display: swap;
+@font-face{
+  font-family:'Poppins';
+  src:url('./fonts/Poppins-Regular.ttf') format('truetype');
+  font-weight:400;
+  font-style:normal;
+  font-display:swap;
 }
+
 
 /* ================= BODY ================= */
 
-body {
-  margin: 0;
-
-  font-family:
-    'Poppins',
-    Arial,
-    sans-serif;
-
-  font-size: 16px;
-  font-weight: 400;
-  line-height: 1.5;
-
-  background-color: var(--color-7);
-  color: var(--color-1);
-
-  overflow-x: hidden;
-
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+body{
+  margin:0;
+  font-family:'Poppins',Arial,sans-serif;
+  font-size:16px;
+  font-weight:400;
+  line-height:1.5;
+  background:var(--background);
+  color:var(--text);
+  overflow-x:hidden;
+  -webkit-font-smoothing:antialiased;
+  -moz-osx-font-smoothing:grayscale;
 }
+
 
 /* ================= TIPOGRAFIA ================= */
 
@@ -89,8 +126,8 @@ p,
 span,
 small,
 strong,
-label {
-  font-family: inherit;
+label{
+  font-family:inherit;
 }
 
 h1,
@@ -98,83 +135,118 @@ h2,
 h3,
 h4,
 h5,
-h6 {
-  font-weight: 700;
+h6{
+  font-weight:700;
 }
 
 strong,
-b {
-  font-weight: 700;
+b{
+  font-weight:700;
 }
+
 
 /* ================= LINKS ================= */
 
-a {
-  color: inherit;
-  text-decoration: none;
+a{
+  color:inherit;
+  text-decoration:none;
 }
+
 
 /* ================= LISTAS ================= */
 
 ul,
-ol {
-  list-style: none;
+ol{
+  list-style:none;
 }
+
 
 /* ================= IMAGENS ================= */
 
-img {
-  max-width: 100%;
-  height: auto;
-  display: block;
+img{
+  max-width:100%;
+  height:auto;
+  display:block;
 }
+
 
 /* ================= FORMULÁRIOS ================= */
 
 button,
 input,
 textarea,
-select {
-  font-family: inherit;
-  font-size: inherit;
-
-  outline: none;
-  border: none;
-
-  background: none;
+select{
+  font-family:inherit;
+  font-size:inherit;
+  outline:none;
+  border:none;
+  background:none;
 }
 
-button {
-  cursor: pointer;
+button{
+  cursor:pointer;
 }
 
-button:disabled {
-  cursor: not-allowed;
+button:disabled{
+  cursor:not-allowed;
 }
+
 
 /* ================= INPUT NUMBER ================= */
 
 input[type="number"]::-webkit-inner-spin-button,
-input[type="number"]::-webkit-outer-spin-button {
-  -webkit-appearance: none;
-  margin: 0;
+input[type="number"]::-webkit-outer-spin-button{
+  -webkit-appearance:none;
+  margin:0;
 }
+
 
 /* ================= SCROLLBAR ================= */
 
-body::-webkit-scrollbar {
-  width: 10px;
+body::-webkit-scrollbar{
+  width:10px;
 }
 
-body::-webkit-scrollbar-track {
-  background: transparent;
+body::-webkit-scrollbar-track{
+  background:transparent;
 }
 
-body::-webkit-scrollbar-thumb {
-  background: var(--color-3);
-  border-radius: 6px;
+body::-webkit-scrollbar-thumb{
+  background:var(--primary-light);
+  border-radius:6px;
 }
 
-body::-webkit-scrollbar-thumb:hover {
-  background: var(--color-4);
+body::-webkit-scrollbar-thumb:hover{
+  background:var(--primary-dark);
+}
+
+
+/* ================= RESPONSIVO PADRÃO ================= */
+
+
+/* DESKTOP GRANDE */
+
+@media(max-width:1700px){
+
+}
+
+
+/* NOTEBOOK */
+
+@media(max-width:1350px){
+
+}
+
+
+/* TABLET */
+
+@media(max-width:850px){
+
+}
+
+
+/* MOBILE */
+
+@media(max-width:580px){
+
 }

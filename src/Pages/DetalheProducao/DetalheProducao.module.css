@@ -291,11 +291,91 @@
   filter: brightness(1.03);
 }
 
-.phaseCard.navy .phaseHeader { background: #07145f; }
-.phaseCard.orange .phaseHeader { background: #f97316; }
-.phaseCard.blue .phaseHeader { background: #1d4ed8; }
-.phaseCard.green .phaseHeader { background: #0f766e; }
-.phaseCard.cyan .phaseHeader { background: #0284c7; }
+
+.phaseCard.tapecaria .phaseHeader{
+  background:#dc2626;
+}
+
+.phaseCard.montagemFinal .phaseHeader{
+  background:#172554;
+}
+
+.phaseCard.marcenaria .phaseHeader{
+  background:#16a34a;
+}
+
+.phaseCard.serralheria .phaseHeader{
+  background:#f97316;
+}
+
+.phaseCard.eletrica .phaseHeader{
+  background:#eab308;
+  color:#111827;
+}
+
+.phaseCard.preMontagem .phaseHeader{
+  background:#78716c;
+}
+
+.phaseCard.laminacao .phaseHeader{
+  background:#0ea5e9;
+}
+
+.phaseCard.pintura .phaseHeader{
+  background:#ffffff;
+  color:#07145f;
+  border:1px solid #dbe5f2;
+}
+
+.phaseCard.pintura .phaseHeader small,
+.phaseCard.pintura .phaseHeader h2,
+.phaseCard.pintura .phaseHeader strong,
+.phaseCard.pintura .phaseHeader span{
+  color:#07145f;
+}
+
+.phaseCard.pintura .phaseOrders small{
+  color:#64748b;
+}
+
+.phaseCard.pintura .orderStatus .running{
+  color:#f59e0b;
+}
+
+.phaseCard.pintura .orderStatus .done{
+  color:#16a34a;
+}
+
+.phaseCard.pintura .orderStatus .waiting{
+  color:#2563eb;
+}
+
+.phaseCard.pintura .phaseStatus > strong{
+  background:#e2e8f0;
+  color:#07145f;
+}
+
+.phaseCard.pintura .phaseProgress{
+  color:#07145f;
+}
+
+.phaseCard.pintura .phaseToggle{
+  background:#e2e8f0;
+  color:#07145f;
+}
+
+.phaseCard.pintura .phaseToggle:hover{
+  background:#cbd5e1;
+}
+
+.phaseCard.piscina .phaseHeader{
+  background:#06b6d4;
+}
+
+.phaseCard.qualidade .phaseHeader{
+  background:#64748b;
+}
+
 
 .phaseName,
 .phaseOrders,
@@ -1578,4 +1658,44 @@
   .operatorAttachInfo{
     margin:14px 14px 0;
   }
+}
+
+/* =========================
+   BOTÃO ÚLTIMO APONTAMENTO
+========================= */
+
+.lastPointingBtn{
+  height:44px;
+  padding:0 16px;
+
+  border:1px solid #dbe5f2;
+  border-radius:10px;
+
+  background:#fff;
+  color:#07145f;
+
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:8px;
+
+  box-sizing:border-box;
+
+  font-size:13px;
+  font-weight:900;
+
+  cursor:pointer;
+
+  transition:.2s ease;
+}
+
+.lastPointingBtn:hover{
+  border-color:#2563eb;
+  background:#eff6ff;
+  color:#2563eb;
+}
+
+.lastPointingBtn svg{
+  width:20px;
+  height:20px;
 }

@@ -12,13 +12,16 @@ import App from './App';
 import authService from './Services/authService';
 
 import Login from './Pages/Login';
-import GestaoProducao from './Pages/GestaoProducao';
+import GestaoProducao from './Pages/GestaoProducao/Home';
 import DashboardProducao from './Pages/DashboardProducao';
 import ProdutividadeOperador from './Pages/ProdutividadeOperador';
 import DashboardOperadores from './Pages/DashboardOperadores';
 import OperadorDetalhe from './Pages/OperadorDetalhe';
 import DetalheProducao from './Pages/DetalheProducao';
 import OrdemDetalhe from './Pages/OrdemDetalhe';
+
+import AuditoriaHome from './Pages/Planejamento/Auditoria/Home';
+import AuditoriaDetalhe from './Pages/Planejamento/Auditoria/AuditoriaDetalhe';
 
 import OperadoresStatus from './Pages/OperadoresStatus';
 import OperadoresParalisacao from './Pages/OperadoresParalisacao';
@@ -27,9 +30,7 @@ import ParalisacaoOperador from './Pages/ParalisacaoOperador';
 import OperadoresForaProducao from './Pages/OperadoresForaProducao/OperadoresForaProducao';
 import OperadoresAguardandoInicio from './Pages/OperadoresAguardandoInicio';
 
-import ProducaoCopy from './Pages/DashboardProducaoCopy';
-import GestaoCopy from './Pages/GestaoProducao copy';
-import ProdutividadeCopy from './Pages/ProdutividadeOperador copy';
+import SugestaoAtrelamento from './Pages/SugestaoAtrelamento';
 
 function ProtectedRoute({ children }) {
   if (!authService.isLoggedIn()) {
@@ -115,18 +116,18 @@ const router = createBrowserRouter([
       },
 
       {
-        path: 'gestao-copy',
-        element: <GestaoCopy />,
+        path: 'ultimo-apontamento',
+        element: <SugestaoAtrelamento />,
       },
 
       {
-        path: 'producao-copy',
-        element: <ProducaoCopy />,
+        path: 'auditoria',
+        element: <AuditoriaHome />,
       },
 
       {
-        path: 'produtividade-copy',
-        element: <ProdutividadeCopy />,
+        path: 'auditoria/:id',
+        element: <AuditoriaDetalhe />,
       },
     ],
   },

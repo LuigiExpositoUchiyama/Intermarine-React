@@ -13,6 +13,7 @@ import {
   MdGroup,
   MdGroups,
   MdHourglassTop,
+  MdHistory,
   MdHub,
   MdMoreVert,
   MdOpenInNew,
@@ -34,6 +35,7 @@ import ModalConfirmarInicioApontamento from '../../Components/ModalConfirmarInic
 import ModalIniciarApontamento from '../../Components/ModalIniciarApontamento';
 import ModalApontamentoSucesso from '../../Components/ModalApontamentoSucesso';
 import ModalRetirarApontamento from '../../Components/ModalRetirarApontamento';
+import ModalSuspenderOF from '../../Components/ModalSuspenderOF';
 
 import gestaoProducaoService from '../../Services/gestaoProducaoService';
 import detalheProducaoService from '../../Services/detalheProducaoService';
@@ -41,25 +43,25 @@ import detalheProducaoService from '../../Services/detalheProducaoService';
 import styles from './DetalheProducao.module.css';
 
 const boatPhaseTemplates = [
-  { number: 1, name: 'Laminação', color: 'navy' },
-  { number: 2, name: 'Pré-Montagem', color: 'orange' },
-  { number: 3, name: 'Pintura', color: 'blue' },
-  { number: 4, name: 'Montagem Final E1', color: 'green' },
-  { number: 5, name: 'Montagem Final E2', color: 'cyan' },
-  { number: 6, name: 'Montagem Final E3', color: 'blue' },
-  { number: 7, name: 'Piscina', color: 'cyan' },
-  { number: 8, name: 'Qualidade', color: 'blue' },
+  { number: 1, name: 'Laminação', color: 'laminacao' },
+  { number: 2, name: 'Pré-Montagem', color: 'preMontagem' },
+  { number: 3, name: 'Pintura', color: 'pintura' },
+  { number: 4, name: 'Montagem Final E1', color: 'montagemFinal' },
+  { number: 5, name: 'Montagem Final E2', color: 'montagemFinal' },
+  { number: 6, name: 'Montagem Final E3', color: 'montagemFinal' },
+  { number: 7, name: 'Piscina', color: 'piscina' },
+  { number: 8, name: 'Qualidade', color: 'qualidade' },
 ];
 
 const miniFactoryPhaseTemplates = [
-  { number: 1, name: 'Elétrica', color: 'navy' },
-  { number: 2, name: 'Tapeçaria', color: 'orange' },
-  { number: 3, name: 'Marcenaria', color: 'blue' },
-  { number: 4, name: 'Serralheria', color: 'green' },
-  { number: 5, name: 'Laminação', color: 'cyan' },
-  { number: 6, name: 'Pré Montagem', color: 'blue' },
-  { number: 7, name: 'MF Elétrica', color: 'green' },
-  { number: 8, name: 'Montagem Final', color: 'navy' },
+  { number: 1, name: 'Elétrica', color: 'eletrica' },
+  { number: 2, name: 'Tapeçaria', color: 'tapecaria' },
+  { number: 3, name: 'Marcenaria', color: 'marcenaria' },
+  { number: 4, name: 'Serralheria', color: 'serralheria' },
+  { number: 5, name: 'Laminação', color: 'laminacao' },
+  { number: 6, name: 'Pré Montagem', color: 'preMontagem' },
+  { number: 7, name: 'MF Elétrica', color: 'eletrica' },
+  { number: 8, name: 'Montagem Final', color: 'montagemFinal' },
 ];
 
 const statusLabels = {
@@ -67,6 +69,7 @@ const statusLabels = {
   concluida: 'Concluída',
   'nao-iniciada': 'Não iniciada',
   atrasada: 'Atrasada',
+  suspensa: 'Suspensa',
 };
 
 const summaryIconMap = {
@@ -357,11 +360,16 @@ function getVariantClass(variant) {
 
 function getPhaseColorClass(color) {
   const map = {
-    navy: styles.navy,
-    orange: styles.orange,
-    blue: styles.blue,
-    green: styles.green,
-    cyan: styles.cyan,
+    tapecaria: styles.tapecaria,
+    montagemFinal: styles.montagemFinal,
+    marcenaria: styles.marcenaria,
+    serralheria: styles.serralheria,
+    eletrica: styles.eletrica,
+    preMontagem: styles.preMontagem,
+    laminacao: styles.laminacao,
+    pintura: styles.pintura,
+    piscina: styles.piscina,
+    qualidade: styles.qualidade,
   };
 
   return map[color] ?? '';
@@ -373,6 +381,7 @@ function getStatusClass(status) {
     concluida: styles.concluida,
     'nao-iniciada': styles.naoIniciada,
     atrasada: styles.atrasada,
+    suspensa: styles.suspensa,
   };
 
   return map[status] ?? '';
@@ -568,6 +577,8 @@ export default function DetalheProducao() {
   const [pointingSuccessData, setPointingSuccessData] = useState(null);
 
   const [showRemovePointingModal, setShowRemovePointingModal] = useState(false);
+  const [showSuspendOrderModal, setShowSuspendOrderModal] = useState(false);
+  const [suspendOrderData, setSuspendOrderData] = useState(null);
   const [removePointingOrder, setRemovePointingOrder] = useState(null);
   const [removePointingOperator, setRemovePointingOperator] = useState(null);
 
@@ -1007,6 +1018,65 @@ export default function DetalheProducao() {
     closeRemovePointingModal();
   }
 
+  function openSuspendOrderModal() {
+    if (!activeActionOrder) {
+      return;
+    }
+
+    setSuspendOrderData({
+      ordem: activeActionOrder,
+      fase: activeActionPhase,
+    });
+
+    setShowSuspendOrderModal(true);
+
+    setActiveActionOrder(null);
+    setActiveActionPhase(null);
+  }
+
+  function closeSuspendOrderModal() {
+    setShowSuspendOrderModal(false);
+    setSuspendOrderData(null);
+  }
+
+  function handleSuspendOrderConfirm() {
+    if (!suspendOrderData?.ordem) {
+      return;
+    }
+
+    setPhases((currentPhases) =>
+      currentPhases.map((currentPhase) => ({
+        ...currentPhase,
+        ofs: currentPhase.ofs.map((item) =>
+          item.id === suspendOrderData.ordem.id
+            ? {
+                ...item,
+                status: 'suspensa',
+              }
+            : item,
+        ),
+        orps: currentPhase.orps.map((item) =>
+          item.id === suspendOrderData.ordem.id
+            ? {
+                ...item,
+                status: 'suspensa',
+              }
+            : item,
+        ),
+        ors: currentPhase.ors.map((item) =>
+          item.id === suspendOrderData.ordem.id
+            ? {
+                ...item,
+                status: 'suspensa',
+              }
+            : item,
+        ),
+      })),
+    );
+
+    closeSuspendOrderModal();
+  }
+
   function executeOrderAction(actionName) {
     if (!activeActionOrder) {
       return;
@@ -1076,6 +1146,15 @@ export default function DetalheProducao() {
         </div>
 
         <div className={styles.detailActions}>
+          <button
+            type="button"
+            className={styles.lastPointingBtn}
+            onClick={() => navigate('/ultimo-apontamento')}
+          >
+            <MdHistory />
+            Último apontamento
+          </button>
+
           <div className={styles.detailSearch}>
             <MdSearch />
 
@@ -1350,6 +1429,11 @@ export default function DetalheProducao() {
             Adicionar paralisação
           </button>
 
+          <button type="button" onClick={openSuspendOrderModal}>
+            <MdPauseCircle />
+            Suspender OF
+          </button>
+
           <button
             type="button"
             onClick={() => executeOrderAction('Retirar paralisação')}
@@ -1415,6 +1499,14 @@ export default function DetalheProducao() {
         operadores={pointingSuccessData?.operadores}
         iniciadoEm={pointingSuccessData?.iniciadoEm}
         onClose={closePointingSuccessModal}
+      />
+
+      <ModalSuspenderOF
+        isOpen={showSuspendOrderModal}
+        ordem={suspendOrderData?.ordem}
+        fase={suspendOrderData?.fase}
+        onClose={closeSuspendOrderModal}
+        onConfirm={handleSuspendOrderConfirm}
       />
 
       <ModalRetirarApontamento

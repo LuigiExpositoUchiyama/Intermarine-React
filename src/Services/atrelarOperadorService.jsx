@@ -1,217 +1,217 @@
-const operadoresAtrelamentoMock = [
-  {
-    id: 1,
-    nome: 'ANA PAULA COSTA',
-    ra: '123458',
-    centroCusto: '1001',
-    area: 'Laminação',
-    status: 'Disponível',
-    ofAtual: '-',
-  },
+  const operadoresAtrelamentoMock = [
+    {
+      id: 1,
+      nome: 'ANA PAULA COSTA',
+      ra: '123458',
+      centroCusto: '1001',
+      area: 'Laminação',
+      status: 'Disponível',
+      ofAtual: '-',
+    },
 
-  {
-    id: 2,
-    nome: 'LUCAS FERREIRA',
-    ra: '123459',
-    centroCusto: '1001',
-    area: 'Laminação',
-    status: 'Disponível',
-    ofAtual: '-',
-  },
+    {
+      id: 2,
+      nome: 'LUCAS FERREIRA',
+      ra: '123459',
+      centroCusto: '1001',
+      area: 'Laminação',
+      status: 'Disponível',
+      ofAtual: '-',
+    },
 
-  {
-    id: 3,
-    nome: 'FERNANDA LIMA',
-    ra: '123461',
-    centroCusto: '1001',
-    area: 'Laminação',
-    status: 'Disponível',
-    ofAtual: '-',
-  },
+    {
+      id: 3,
+      nome: 'FERNANDA LIMA',
+      ra: '123461',
+      centroCusto: '1001',
+      area: 'Laminação',
+      status: 'Disponível',
+      ofAtual: '-',
+    },
 
-  {
-    id: 4,
-    nome: 'RICARDO SANTOS',
-    ra: '123465',
-    centroCusto: '1001',
-    area: 'Laminação',
-    status: 'Disponível',
-    ofAtual: '-',
-  },
+    {
+      id: 4,
+      nome: 'RICARDO SANTOS',
+      ra: '123465',
+      centroCusto: '1001',
+      area: 'Laminação',
+      status: 'Disponível',
+      ofAtual: '-',
+    },
 
-  {
-    id: 5,
-    nome: 'JOÃO CARLOS SILVA',
-    ra: '123456',
-    centroCusto: '1001',
-    area: 'Laminação',
-    status: 'Ativo',
-    ofAtual: 'OF-2026-00158',
-  },
+    {
+      id: 5,
+      nome: 'JOÃO CARLOS SILVA',
+      ra: '123456',
+      centroCusto: '1001',
+      area: 'Laminação',
+      status: 'Ativo',
+      ofAtual: 'OF-2026-00158',
+    },
 
-  {
-    id: 6,
-    nome: 'MARCOS ALMEIDA',
-    ra: '123457',
-    centroCusto: '1001',
-    area: 'Laminação',
-    status: 'Ativo',
-    ofAtual: 'OF-2026-00187',
-  },
+    {
+      id: 6,
+      nome: 'MARCOS ALMEIDA',
+      ra: '123457',
+      centroCusto: '1001',
+      area: 'Laminação',
+      status: 'Ativo',
+      ofAtual: 'OF-2026-00187',
+    },
 
-  {
-    id: 7,
-    nome: 'RAFAEL OLIVEIRA',
-    ra: '123460',
-    centroCusto: '1001',
-    area: 'Laminação',
-    status: 'Ativo',
-    ofAtual: 'OF-2026-00164',
-  },
+    {
+      id: 7,
+      nome: 'RAFAEL OLIVEIRA',
+      ra: '123460',
+      centroCusto: '1001',
+      area: 'Laminação',
+      status: 'Ativo',
+      ofAtual: 'OF-2026-00164',
+    },
 
-  {
-    id: 8,
-    nome: 'JULIANA MENDES',
-    ra: '123468',
-    centroCusto: '1001',
-    area: 'Laminação',
-    status: 'Ativo',
-    ofAtual: 'OF-2026-00163',
-  },
+    {
+      id: 8,
+      nome: 'JULIANA MENDES',
+      ra: '123468',
+      centroCusto: '1001',
+      area: 'Laminação',
+      status: 'Ativo',
+      ofAtual: 'OF-2026-00163',
+    },
 
-  {
-    id: 9,
-    nome: 'GABRIELA SOUZA',
-    ra: '223451',
-    centroCusto: '1002',
-    area: 'Pré-Montagem',
-    status: 'Disponível',
-    ofAtual: '-',
-  },
+    {
+      id: 9,
+      nome: 'GABRIELA SOUZA',
+      ra: '223451',
+      centroCusto: '1002',
+      area: 'Pré-Montagem',
+      status: 'Disponível',
+      ofAtual: '-',
+    },
 
-  {
-    id: 10,
-    nome: 'PEDRO HENRIQUE',
-    ra: '223452',
-    centroCusto: '1002',
-    area: 'Pré-Montagem',
-    status: 'Disponível',
-    ofAtual: '-',
-  },
+    {
+      id: 10,
+      nome: 'PEDRO HENRIQUE',
+      ra: '223452',
+      centroCusto: '1002',
+      area: 'Pré-Montagem',
+      status: 'Disponível',
+      ofAtual: '-',
+    },
 
-  {
-    id: 11,
-    nome: 'BRUNO MARTINS',
-    ra: '323451',
-    centroCusto: '1003',
-    area: 'Pintura',
-    status: 'Disponível',
-    ofAtual: '-',
-  },
+    {
+      id: 11,
+      nome: 'BRUNO MARTINS',
+      ra: '323451',
+      centroCusto: '1003',
+      area: 'Pintura',
+      status: 'Disponível',
+      ofAtual: '-',
+    },
 
-  {
-    id: 12,
-    nome: 'LETÍCIA ROCHA',
-    ra: '423451',
-    centroCusto: '1004',
-    area: 'Montagem Final E1',
-    status: 'Disponível',
-    ofAtual: '-',
-  },
-];
+    {
+      id: 12,
+      nome: 'LETÍCIA ROCHA',
+      ra: '423451',
+      centroCusto: '1004',
+      area: 'Montagem Final E1',
+      status: 'Disponível',
+      ofAtual: '-',
+    },
+  ];
 
-const delay = (ms = 300) => new Promise((resolve) => setTimeout(resolve, ms));
+  const delay = (ms = 300) => new Promise((resolve) => setTimeout(resolve, ms));
 
-function normalize(value = '') {
-  return String(value)
-    .normalize('NFD')
-    .replace(/[\u0300-\u036f]/g, '')
-    .trim()
-    .toLowerCase();
-}
+  function normalize(value = '') {
+    return String(value)
+      .normalize('NFD')
+      .replace(/[\u0300-\u036f]/g, '')
+      .trim()
+      .toLowerCase();
+  }
 
-const atrelarOperadorService = {
-  async getOperadoresPorArea(area) {
-    await delay();
+  const atrelarOperadorService = {
+    async getOperadoresPorArea(area) {
+      await delay();
 
-    const areaNormalizada = normalize(area);
+      const areaNormalizada = normalize(area);
 
-    const operadores = areaNormalizada
-      ? operadoresAtrelamentoMock.filter(
-          (operador) => normalize(operador.area) === areaNormalizada,
-        )
-      : operadoresAtrelamentoMock;
+      const operadores = areaNormalizada
+        ? operadoresAtrelamentoMock.filter(
+            (operador) => normalize(operador.area) === areaNormalizada,
+          )
+        : operadoresAtrelamentoMock;
 
-    return operadores.map((operador) => ({
-      ...operador,
-    }));
-  },
+      return operadores.map((operador) => ({
+        ...operador,
+      }));
+    },
 
-  async atrelarOperador({ ordemId, ordemCodigo, operadoresIds }) {
-    await delay(600);
+    async atrelarOperador({ ordemId, ordemCodigo, operadoresIds }) {
+      await delay(600);
 
-    const operadores = operadoresAtrelamentoMock.filter((operador) =>
-      operadoresIds.includes(operador.id),
-    );
-
-    if (!operadores.length) {
-      throw new Error('Nenhum colaborador encontrado.');
-    }
-
-    const operadorIndisponivel = operadores.find(
-      (operador) => operador.status !== 'Disponível',
-    );
-
-    if (operadorIndisponivel) {
-      throw new Error(
-        `${operadorIndisponivel.nome} já está atrelado a outra ordem.`,
+      const operadores = operadoresAtrelamentoMock.filter((operador) =>
+        operadoresIds.includes(operador.id),
       );
-    }
 
-    operadores.forEach((operador) => {
-      operador.status = 'Ativo';
+      if (!operadores.length) {
+        throw new Error('Nenhum colaborador encontrado.');
+      }
 
-      operador.ofAtual = ordemCodigo || String(ordemId);
-    });
+      const operadorIndisponivel = operadores.find(
+        (operador) => operador.status !== 'Disponível',
+      );
 
-    return {
-      success: true,
+      if (operadorIndisponivel) {
+        throw new Error(
+          `${operadorIndisponivel.nome} já está atrelado a outra ordem.`,
+        );
+      }
 
-      message: 'Colaboradores atrelados com sucesso.',
+      operadores.forEach((operador) => {
+        operador.status = 'Ativo';
 
-      operadores: operadores.map((operador) => ({
-        ...operador,
-      })),
+        operador.ofAtual = ordemCodigo || String(ordemId);
+      });
 
-      ordemId,
-    };
-  },
+      return {
+        success: true,
 
-  async desatrelarOperador(operadorId) {
-    await delay(400);
+        message: 'Colaboradores atrelados com sucesso.',
 
-    const operador = operadoresAtrelamentoMock.find(
-      (item) => item.id === operadorId,
-    );
+        operadores: operadores.map((operador) => ({
+          ...operador,
+        })),
 
-    if (!operador) {
-      throw new Error('Colaborador não encontrado.');
-    }
+        ordemId,
+      };
+    },
 
-    operador.status = 'Disponível';
+    async desatrelarOperador(operadorId) {
+      await delay(400);
 
-    operador.ofAtual = '-';
+      const operador = operadoresAtrelamentoMock.find(
+        (item) => item.id === operadorId,
+      );
 
-    return {
-      success: true,
+      if (!operador) {
+        throw new Error('Colaborador não encontrado.');
+      }
 
-      message: 'Colaborador desatrelado com sucesso.',
+      operador.status = 'Disponível';
 
-      operador: {
-        ...operador,
-      },
-    };
-  },
-};
+      operador.ofAtual = '-';
 
-export default atrelarOperadorService;
+      return {
+        success: true,
+
+        message: 'Colaborador desatrelado com sucesso.',
+
+        operador: {
+          ...operador,
+        },
+      };
+    },
+  };
+
+  export default atrelarOperadorService;
